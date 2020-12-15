@@ -7,8 +7,9 @@ import {
 import Page from 'src/components/Page';
 import Budget from './Budget';
 import BoardsContext from 'src/context/BoardsContext'
-import APIManager from 'src/utils/LinkAPI'
-import SimpleModal from 'src/views/Plugin/modal'
+
+import ChatSignalR from 'src/views/chat/Chat-SignalR'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -19,37 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Dashboard = () => {
-  const classes = useStyles();
-
-  const [userOnline, setUserOnline] = useState(Array());
-  useEffect(() => {
-    async function fetchBoardList() {
-     debugger
-      var token = JSON.parse(localStorage.getItem("Token")).token;
-    
-      const requestURL = APIManager+"/api/GetUserOnline";
-      const requestOptions = {
-        method: 'Get',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
-        // body: JSON.stringify({ title: 'React POST Request Example' })
-      };
-      fetch(requestURL, requestOptions)
-        .then(response => response.json()         
-       )
-        .then(data => 
-          console.log(data));
-    }
-
-    fetchBoardList();
-  }, []);
-  
-
-  return (
-    userOnline
-  );
+  return <ChatSignalR />;
 };
 
 export default Dashboard;
