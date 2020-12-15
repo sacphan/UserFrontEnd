@@ -56,9 +56,7 @@ const LoginView = () => {
        if (result.code==0) 
        {
            localStorage.setItem("Token",JSON.stringify(result.data))
-           dispatch({
-             type:'LOGIN'           
-           });
+         
           navigate('/app/dashboard', { replace: true });
        }
        else{
@@ -140,6 +138,9 @@ const LoginView = () => {
                       dispatch({
                         type:'LOGIN'
                         
+                      });
+                      dispatch({
+                        type:'LOGIN',username: values.username          
                       });
                      navigate('/app/dashboard', { replace: true });
                   }
