@@ -9,6 +9,7 @@ import Budget from './Budget';
 import BoardsContext from 'src/context/BoardsContext'
 import APIManager from 'src/utils/LinkAPI'
 import SimpleModal from 'src/views/Plugin/modal'
+import ChatSignalR from 'src/views/chat/Chat-SignalR'
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -87,7 +88,7 @@ const Dashboard = () => {
        
        
       </Container>
-      
+      <ChatSignalR />
     </Page>
     </BoardsContext.Provider>
   );
