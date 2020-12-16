@@ -15,8 +15,8 @@ export default () => {
   const [connection, setConnection] = useState();
    const  userNameCurrent  = useSelector((state) => state.AuthReducer.userName);
   
-  useEffect( () => {
-    const createHubConnection = async () => {
+  useEffect(async () => {
+   
       const socketConnection = new HubConnectionBuilder()
       .configureLogging(LogLevel.Debug)
       .withUrl(APIManager+ "/chatHub", {
@@ -24,7 +24,7 @@ export default () => {
         transport: HttpTransportType.WebSockets
       })
       .build();
-      debugger
+      
      await socketConnection.start();
     setConnection(socketConnection);
 
@@ -32,24 +32,17 @@ export default () => {
     if (userNameCurrent) {
       setUserName(userNameCurrent);
     }
-    socketConnection &&socketConnection.on("online", userOnline =>   
-  {
-      setUserNameOnline(userOnline);
-  });
+ 
     socketConnection &&  socketConnection.invoke("online", userNameCurrent);
-    //offline
-    return () => {
+    
+    socketConnection.onclose(function() {
+      alert('Server has disconnected');
+    });
+    return ()=>{
       alert(123)
-      socketConnection &&socketConnection.on("offline", userOnline =>   
-      {
-          setUserNameOnline(userOnline);
-      });
-      socketConnection &&  socketConnection.invoke("offline", userNameCurrent);
+      connection &&  connection.invoke("offline", userNameCurrent);
     }
-  
-    }
-    createHubConnection();
-   
+    
     
   }, []);
   
@@ -57,7 +50,10 @@ export default () => {
   {
       setUserNameOnline(userOnline);
   });
-
+  connection &&connection.on("offline", userOnline =>   
+  {
+      setUserNameOnline(userOnline);
+  });
   
   return (
     <div className="wrapper">
@@ -77,7 +73,9 @@ export default () => {
         <div className="card-footer border-primary p-0">
           <div className="input-group">
             <button onClick={()=>{
-                connection && connection.invoke("online", userName);
+                 alert(123)
+               
+                 connection &&  connection.invoke("offline", userNameCurrent);
             }}>
               button
             </button>
