@@ -60,7 +60,7 @@ const RegisterView = () => {
               })
             }
             onSubmit={(values) => {
-              debugger
+              
               //const User = [{'Username':values.username, 'Password': values.password }];
              
             //   const userProfile = JSON.stringify({
@@ -78,7 +78,7 @@ const RegisterView = () => {
              })
              .then(response => response.json())
              .then(result => {
-               debugger
+               
                 if (result.code==0) 
                 {
                     localStorage.setItem("Token",JSON.stringify(result.data));

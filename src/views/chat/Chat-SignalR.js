@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./Chat.css";
 import Message from "./Message";
-import FormControl from 'react-bootstrap/FormControl';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Button from 'react-bootstrap/Button';
-import '../../App.css';
+
+
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import './Chat.css'
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
 import {
   HubConnectionBuilder,
   LogLevel,
@@ -13,7 +22,16 @@ import {
 } from "@microsoft/signalr";
 import APIManager from 'src/utils/LinkAPI'
 import { useSelector } from 'react-redux';
+const useStyles = makeStyles({
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: 'auto',
+  },
+});
 export default () => {
+  const classes = useStyles();
   const [userName, setUserName] = useState("");
   // const [message, setMessage] = useState("");
   const [userNameOnline, setUserNameOnline] = useState([]);
@@ -60,34 +78,41 @@ export default () => {
     setUserNameOnline(userOnline);
   });
 
-  return (
-    <div className="messenger"
-      style={
-        { color: 'black' }} >
-      <div className="message-header" > CHAT BOX </div>
-      <hr style={{ marginTop: '30px' }} />
-
-      <div className="message-body"
-        id="message-body" >
-      </div>
-
-      <Form onSubmit={sendMessage}
-        autoComplete="off" >
-        <InputGroup className="mb-3 message-input"
-          style={
-            { padding: '0px', margin: '0px' }} >
-          <FormControl style={
-            { padding: '0px' }}
-            aria-label="Recipient's username"
-            aria-describedby="basic-addon2"
-            name="messageText" />
-          <InputGroup.Append >
-            <Button variant="success"
-              type="submit" >
-              Send </Button>
-          </InputGroup.Append>
-        </InputGroup>
-      </Form>
+  const list = (anchor) => (
+    <div
+      className={clsx(classes.list, {
+        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+      })}
+      role="presentation"
+      // onClick={toggleDrawer(anchor, false)}
+      // onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
+
+  return (
+    <div className="friendOnline">
+       {list('right')}
+    </div>
+  //   <Drawer  anchor={'right'} open={true} >
+  //  
+  // </Drawer>
+    );
 };

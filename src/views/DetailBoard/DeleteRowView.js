@@ -41,7 +41,7 @@ export default function DeleteRowView() {
       .then(data =>{
         if (data.code==0)
         {
-            debugger
+            
             const indexDelete = coloumnContext.coloumn.boardDetail.indexOf(rowContext.row);
             const rownew =[...coloumnContext.coloumn.boardDetail.slice(0,indexDelete),...coloumnContext.coloumn.boardDetail.slice(indexDelete+1)];
             const columnNew = {

@@ -121,7 +121,6 @@ const LoginView = () => {
               password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={(values) => {       
-              debugger
                 const login = JSON.stringify({'username': values.username, 'password': values.password })
                 fetch(APIManager+'/api/login', {
                  method: 'post',

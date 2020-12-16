@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
+    paddingTop: theme.spacing(3),
+    position: "relative"
   }
 }));
 
@@ -26,11 +27,9 @@ const Dashboard = () => {
   let listBoard = [];
   useEffect(() => {
     async function fetchBoardList() {
-     
-      var token = JSON.parse(localStorage.getItem("Token")).token;
-    
 
-      const requestURL = APIManager+"/api/GetListBoardBlank";
+      var token = JSON.parse(localStorage.getItem("Token")).token;
+      const requestURL = APIManager + "/api/GetListBoardBlank";
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -57,7 +56,7 @@ const Dashboard = () => {
     </Grid>
 
   }
-  
+
   boards.map((item) => {
 
     listBoard.push(renderBoard(item));
@@ -65,31 +64,31 @@ const Dashboard = () => {
 
   return (
     <BoardsContext.Provider value={{
-      boards:boards,
-      setBoards:setBoards
+      boards: boards,
+      setBoards: setBoards
     }}>
-    <Page
-      className={classes.root}
-      title="Dashboard"
-    >
-      
-      <Container maxWidth={false}>
-      
-         <SimpleModal boards={boards} setBoards={setBoards} />
-       
-        <br />
-        <Grid
-          container
-          spacing={3}
-        >
-          {listBoard}
-          
-        </Grid>
-       
-       
-      </Container>
-      <ChatSignalR />
-    </Page>
+      <Page
+        className={classes.root}
+        title="Dashboard"
+      >
+
+        <Container maxWidth={false}>
+
+          <SimpleModal boards={boards} setBoards={setBoards} />
+
+          <br />
+          <Grid
+            container
+            spacing={3}
+          >
+            {listBoard}
+
+          </Grid>
+
+
+        </Container>
+        <ChatSignalR />
+      </Page>
     </BoardsContext.Provider>
   );
 };

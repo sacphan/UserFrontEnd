@@ -51,7 +51,7 @@ export default function SimpleModal(props) {
   const [values,setValues] = React.useState({content:""});
   const boardContext = useContext(BoardsContext);
   const handleOpen = () => {
-      debugger
+      
     setValues({id:rowCurrent.id,content:rowCurrent.content});
     setOpen(true);
   };

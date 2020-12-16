@@ -6,13 +6,35 @@ import GlobalStyles from 'src/components/GlobalStyles';
 import 'src/mixins/chartjs';
 import theme from 'src/theme';
 import routes from 'src/routes';
+import APIManager from 'src/utils/LinkAPI';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux'
 
 const App = () => {
-debugger
-  const  isLoggedIn  = useSelector((state) => state.AuthReducer.isLoggedIn);
-  const routing = useRoutes(routes(isLoggedIn));
+  debugger
+  const dispatch = useDispatch();
+  var token = JSON.parse(localStorage.getItem("Token")).token;
+  const requestURL = APIManager + "/api/isLogin";
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    }
+  };
+  fetch(requestURL, requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    //if (result=='true'){
+      dispatch({
+        type:'LOGIN'           
+      });     
+    //}           
+  }
+   );
+  const isLoggedIn  = useSelector((state) => state.AuthReducer.isLoggedIn);
 
+  const routing = useRoutes(routes(isLoggedIn));
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />

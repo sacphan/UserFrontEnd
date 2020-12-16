@@ -9,3 +9,13 @@
 .card {
   height: 100%;
 }
+
+.friendOnline{
+  width: 200px;
+  /* box-shadow: ; */
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100vh;  
+  box-shadow: 5px 10px #888888;
+}
