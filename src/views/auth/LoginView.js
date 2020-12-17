@@ -140,7 +140,7 @@ const LoginView = () => {
                         
                       });
                       dispatch({
-                        type:'LOGIN',username: values.username          
+                        type:'LOGIN',username: values.username        
                       });
                      navigate('/app/dashboard', { replace: true });
                   }

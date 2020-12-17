@@ -72,10 +72,8 @@ const Dashboard = () => {
       title="Dashboard"
     >
       
-      <Container maxWidth={false}>
-      
-         <SimpleModal boards={boards} setBoards={setBoards} />
-       
+      <Container maxWidth={false}>     
+         <SimpleModal boards={boards} setBoards={setBoards} />      
         <br />
         <Grid
           container

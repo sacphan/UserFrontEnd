@@ -1,6 +1,7 @@
 
 let CurrenState={
     userName:"",
+
     isLoggedIn:false
 }
 
