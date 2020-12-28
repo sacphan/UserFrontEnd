@@ -23,15 +23,19 @@ const App = () => {
     }
   };
   fetch(requestURL, requestOptions)
-  .then(response => response.json())
-  .then(result => {
-    //if (result=='true'){
-      dispatch({
-        type:'LOGIN'           
-      });     
-    //}           
-  }
-   );
+  .then(response => 
+  {
+      if (response.status==200)
+      {
+        response.json();
+        dispatch({
+          type:'LOGIN'           
+        });    
+      }
+
+  })
+
+   
   const isLoggedIn  = useSelector((state) => state.AuthReducer.isLoggedIn);
 
   const routing = useRoutes(routes(isLoggedIn));
