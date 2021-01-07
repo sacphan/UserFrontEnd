@@ -13,29 +13,31 @@ import { useDispatch } from 'react-redux'
 const App = () => {
   debugger
   const dispatch = useDispatch();
-  var token = JSON.parse(localStorage.getItem("Token")).token;
-  const requestURL = APIManager + "/api/isLogin";
-  const requestOptions = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
-    }
-  };
-  fetch(requestURL, requestOptions)
-  .then(response => 
-  {
-      if (response.status==200)
-      {
-        response.json();
-        dispatch({
-          type:'LOGIN'           
-        });    
+  var token = JSON.parse(localStorage.getItem("Token"));
+  if (token != null){
+    token = token.token
+    const requestURL = APIManager + "/api/isLogin";
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
       }
-
-  })
-
-   
+    };
+    fetch(requestURL, requestOptions)
+    .then(response => 
+    {
+        if (response.status==200)
+        {
+          response.json();
+          dispatch({
+            type:'LOGIN'           
+          });    
+        }
+  
+    })
+  }
+ 
   const isLoggedIn  = useSelector((state) => state.AuthReducer.isLoggedIn);
 
   const routing = useRoutes(routes(isLoggedIn));
