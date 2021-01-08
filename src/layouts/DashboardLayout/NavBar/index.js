@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -24,53 +24,30 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 
+
+import {
+  HubConnectionBuilder,
+  LogLevel,
+  HttpTransportType
+} from "@microsoft/signalr";
+import APIManager from 'src/utils/LinkAPI'
+import { useSelector } from 'react-redux';
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
   jobTitle: 'Senior Developer',
   name: 'Katarina Smith'
 };
-
 const items = [
   {
     href: '/app/dashboard',
     icon: BarChartIcon,
     title: 'Board'
   },
-  // {
-  //   href: '/app/customers',
-  //   icon: UsersIcon,
-  //   title: 'Customers'
-  // },
-  // {
-  //   href: '/app/products',
-  //   icon: ShoppingBagIcon,
-  //   title: 'Products'
-  // },
   {
     href: '/app/account',
     icon: UserIcon,
     title: 'Account'
   }
-  // {
-  //   href: '/app/settings',
-  //   icon: SettingsIcon,
-  //   title: 'Settings'
-  // },
-  // {
-  //   href: '/login',
-  //   icon: LockIcon,
-  //   title: 'Login'
-  // },
-  // {
-  //   href: '/register',
-  //   icon: UserPlusIcon,
-  //   title: 'Register'
-  // },
-  // {
-  //   href: '/404',
-  //   icon: AlertCircleIcon,
-  //   title: 'Error'
-  // }
 ];
 
 const useStyles = makeStyles(() => ({
@@ -92,13 +69,50 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
-
+  const [userName, setUserName] = useState("");
+  const [connection, setConnection] = useState();
+  const [userNameOnline, setUserNameOnline] = useState([]);
+  const userNameCurrent = useSelector((state) => state.AuthReducer.userName);
+  
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
     }
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
+  useEffect(async () => {
+
+    const socketConnection = new HubConnectionBuilder()
+      .configureLogging(LogLevel.Debug)
+      .withUrl(APIManager + "/chatHub", {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets
+      })
+      .build();
+    await socketConnection.start();
+    setConnection(socketConnection);
+    if (userNameCurrent) {
+      setUserName(userNameCurrent);
+    }
+    socketConnection && socketConnection.invoke("online", userNameCurrent);
+    
+    socketConnection.onclose(function () {
+      alert('Server has disconnected');
+    });
+    return () => {
+      connection && connection.invoke("offline", userNameCurrent);
+    }
+  }, []);
+ 
+  connection && connection.on("online", userOnline => {
+    console.log(userOnline)
+    setUserNameOnline(userOnline);
+  });
+  connection && connection.on("offline", userOnline => {
+    setUserNameOnline(userOnline);
+  });
+
 
   const content = (
     <Box
@@ -135,12 +149,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       <Divider />
       <Box p={2}>
         <List>
-          {items.map((item) => (
+          {userNameOnline.map((item) => (
             <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
+              href={123}
+              key={123}
+              title={item}
+              icon={123}
             />
           ))}
         </List>
