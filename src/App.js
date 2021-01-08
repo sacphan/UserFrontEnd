@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 
 const App = () => {
-  debugger
   const dispatch = useDispatch();
   var token = JSON.parse(localStorage.getItem("Token"));
   if (token != null){

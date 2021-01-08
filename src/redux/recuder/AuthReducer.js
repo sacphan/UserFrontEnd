@@ -6,7 +6,6 @@ let CurrenState={
 
 export const AuthReducer=(state  = CurrenState,action)=>{
     
-    debugger
     switch (action.type) {     
         case 'LOGIN':
          

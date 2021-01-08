@@ -15,10 +15,10 @@ import {
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import EditModal from 'src/views/Plugin/EditModal';
-
-
-import AlertDialog from '../../Plugin/Dialog'
-
+import LockIcon from '@material-ui/icons/Lock'
+import PeopleIcon from '@material-ui/icons/People';
+import PasswordDialog from 'src/views/Plugin/PasswordDialog'
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100%'
@@ -38,14 +38,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Budget = ({ className, ...rest }) => {
+const BoardGame = ({ className, ...rest }) => {
   const classes = useStyles();
   const {Name,setName} = useState('');
   const {board} = rest;
+  debugger;
   const navigate = useNavigate();
-  const MoveDetail = ()=>{
+  const JoinGame = ()=>{
     
-    navigate(`/app/detailtable/${board.id}`, { replace: true });
+    navigate(`/app/BoardGame/${board.id}`, { replace: true });
   }
   let html='';
   const handleChange = (event) => {
@@ -67,6 +68,49 @@ const Budget = ({ className, ...rest }) => {
     variant="outlined"
   />
   }
+  if (board.password!=null){
+    return(
+    <Card
+      className={clsx(classes.root, className)}
+      {...rest}
+    >
+      <CardContent>
+        <Grid
+          container
+          justify="space-between"
+          spacing={3} 
+        >
+          <Grid item >
+            <Typography
+              color="textSecondary"
+              gutterBottom
+              variant="h6"
+            >
+              ID:{board.id}
+            </Typography>
+            <Typography
+              color="textPrimary"
+              variant="h3"
+            >
+              
+            </Typography>
+          </Grid >
+          <div>         
+             <PeopleIcon></PeopleIcon>{board.status}
+</div>
+        </Grid>
+        <Box
+          mt={2}
+          display="flex"
+          alignItems="center"
+        >
+          <LockIcon></LockIcon>
+          <PasswordDialog></PasswordDialog>
+        </Box>
+      </CardContent>
+    </Card>
+    )
+  }
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -84,7 +128,7 @@ const Budget = ({ className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              {board.name}
+              ID:{board.id}
             </Typography>
             <Typography
               color="textPrimary"
@@ -93,19 +137,19 @@ const Budget = ({ className, ...rest }) => {
               
             </Typography>
           </Grid >
-          <Grid item >
-            <AlertDialog boardCurrent = {board}/>
-          </Grid>
+          <div>         
+             <PeopleIcon></PeopleIcon>{board.status}
+</div>
+
         </Grid>
         <Box
           mt={2}
           display="flex"
           alignItems="center"
         >
-        
-          <EditModal boardCurrent={board}></EditModal>
-          <Button  color="primary" onClick={MoveDetail}>
-            Detail
+          <LockOpenIcon></LockOpenIcon>
+          <Button  color="primary" onClick={JoinGame}>
+            Join
           </Button>
         </Box>
       </CardContent>
@@ -113,8 +157,8 @@ const Budget = ({ className, ...rest }) => {
   );
 };
 
-Budget.propTypes = {
+BoardGame.propTypes = {
   className: PropTypes.string
 };
 
-export default Budget;
+export default BoardGame;

@@ -5,7 +5,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Budget from './Budget';
+import BoardGame from './BoardGame';
 import BoardsContext from 'src/context/BoardsContext'
 import APIManager from 'src/utils/LinkAPI'
 import SimpleModal from 'src/views/Plugin/modal'
@@ -45,20 +45,29 @@ const Dashboard = () => {
     fetchBoardList();
   }, []);
   const renderBoard = (item) => {
-
+    if (item.password!= null){
+      return <Grid key={item.id} item
+    lg={3}
+    sm={6}
+    xl={3}
+    xs={12}
+  >      
+    <BoardGame board={item} />
+  </Grid>
+  }
     return <Grid key={item.id} item
       lg={3}
       sm={6}
       xl={3}
       xs={12}
-    >
-      <Budget board={item} />
+    >      
+      <BoardGame board={item} />
     </Grid>
 
   }
 
   boards.map((item) => {
-
+    debugger
     listBoard.push(renderBoard(item));
   })
 
