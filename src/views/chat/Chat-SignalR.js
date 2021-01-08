@@ -49,22 +49,17 @@ export default () => {
         transport: HttpTransportType.WebSockets
       })
       .build();
-
     await socketConnection.start();
     setConnection(socketConnection);
-
-
     if (userNameCurrent) {
       setUserName(userNameCurrent);
     }
-
     socketConnection && socketConnection.invoke("online", userNameCurrent);
 
     socketConnection.onclose(function () {
       alert('Server has disconnected');
     });
     return () => {
-      alert(123)
       connection && connection.invoke("offline", userNameCurrent);
     }
 
