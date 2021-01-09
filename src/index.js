@@ -9,11 +9,14 @@ import {rootReducer} from 'src/redux/recuder/RoorReducer';
 
 const store = createStore(rootReducer);
 ReactDOM.render((
-  <Provider store={store}>
-     <BrowserRouter>
-    <App />
-  </BrowserRouter>
-  </Provider>
+
+    <Provider store={store}>   
+      <BrowserRouter>    
+            <App />     
+      </BrowserRouter>
+    </Provider>
+
+  
  
 ), document.getElementById('root'));
 

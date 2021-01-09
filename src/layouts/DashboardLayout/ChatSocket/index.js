@@ -23,15 +23,9 @@ import {
   Users as UsersIcon
 } from 'react-feather';
 import NavItem from './NavItem';
+import ListChat from 'src/views/chat/ListChat';
 
 
-import {
-  HubConnectionBuilder,
-  LogLevel,
-  HttpTransportType
-} from "@microsoft/signalr";
-import APIManager from 'src/utils/LinkAPI'
-import { useSelector } from 'react-redux';
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
   jobTitle: 'Senior Developer',
@@ -40,7 +34,7 @@ const user = {
 const items = [
   {
     href: '/app/dashboard',
-    icon: BarChartIcon,
+    icon: BarChartIcon, 
     title: 'Board'
   },
   {
@@ -66,13 +60,10 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const NavBar = ({ onMobileClose, openMobile }) => {
+const NavBar = ({ onMobileClose, openMobile,userNameOnline }) => {
   const classes = useStyles();
   const location = useLocation();
-  const [userName, setUserName] = useState("");
-  const [connection, setConnection] = useState();
-  const [userNameOnline, setUserNameOnline] = useState([]);
-  const userNameCurrent = useSelector((state) => state.AuthReducer.userName);
+ 
   
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -81,37 +72,9 @@ const NavBar = ({ onMobileClose, openMobile }) => {
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
-  useEffect(async () => {
-
-    const socketConnection = new HubConnectionBuilder()
-      .configureLogging(LogLevel.Debug)
-      .withUrl(APIManager + "/chatHub", {
-        skipNegotiation: true,
-        transport: HttpTransportType.WebSockets
-      })
-      .build();
-    await socketConnection.start();
-    setConnection(socketConnection);
-    if (userNameCurrent) {
-      setUserName(userNameCurrent);
-    }
-    socketConnection && socketConnection.invoke("online", userNameCurrent);
-    
-    socketConnection.onclose(function () {
-      alert('Server has disconnected');
-    });
-    return () => {
-      connection && connection.invoke("offline", userNameCurrent);
-    }
-  }, []);
  
-  connection && connection.on("online", userOnline => {
-    console.log(userOnline)
-    setUserNameOnline(userOnline);
-  });
-  connection && connection.on("offline", userOnline => {
-    setUserNameOnline(userOnline);
-  });
+ 
+
 
 
   const content = (
@@ -148,16 +111,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
       </Box>
       <Divider />
       <Box p={2}>
-        <List>
+        {/* <List>
           {userNameOnline.map((item) => (
-            <NavItem
-              href={123}
-              key={123}
-              title={item}
-              icon={123}
-            />
+            <p key={item}>{item}</p>
           ))}
-        </List>
+        </List> */}
+        <ListChat userNameOnline={userNameOnline}></ListChat>
       </Box>
       <Box flexGrow={1} />
       <Box

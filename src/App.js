@@ -12,37 +12,46 @@ import { useDispatch } from 'react-redux'
 
 const App = () => {
   const dispatch = useDispatch();
- 
-  useEffect(async () => {
-
-    var token = JSON.parse(localStorage.getItem("Token"));
-    if (token != null){
-      token = token.token
-      const requestURL = APIManager + "/api/isLogin";
-      const requestOptions = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        }
-      };
-      fetch(requestURL, requestOptions)
-      .then(response => response.json())
-      .then(res => 
-      {
-          console.log(res)
-            dispatch({
-              type:'LOGIN',username: res.username          
-            });
-          
-    
-      })
+  const isLogedIn  = useSelector((state) => state.AuthReducer.isLoggedIn);
+  useEffect(() => {
+    async function Init() {
+      let getToken = localStorage.getItem("Token");
+      if (getToken){
+       
+        var token = JSON.parse(getToken);
+        token = token.token
+        const requestURL = APIManager + "/api/isLogin";
+        const requestOptions = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        };
+        
+       
+        fetch(requestURL, requestOptions)
+        .then(response => response.json())
+        .then(res => 
+        {
+            if (res!=null)
+            {
+              dispatch({
+                type:'LOGIN',username: res.username          
+              });
+            }
+              
+  
+            
+      
+        })
+      }
     }
-    return (<div></div>)
-  }, []);
-  const isLoggedIn  = useSelector((state) => state.AuthReducer.isLoggedIn);
+    Init();
+  },[]);
+ 
 
-  const routing = useRoutes(routes(isLoggedIn));
+  const routing = useRoutes(routes(isLogedIn));
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
