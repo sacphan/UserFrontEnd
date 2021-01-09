@@ -42,7 +42,6 @@ const BoardGame = ({ className, ...rest }) => {
   const classes = useStyles();
   const {Name,setName} = useState('');
   const {board} = rest;
-  debugger;
   const navigate = useNavigate();
   const JoinGame = ()=>{
     
@@ -105,7 +104,7 @@ const BoardGame = ({ className, ...rest }) => {
           alignItems="center"
         >
           <LockIcon></LockIcon>
-          <PasswordDialog></PasswordDialog>
+          <PasswordDialog  board={board} ></PasswordDialog>
         </Box>
       </CardContent>
     </Card>

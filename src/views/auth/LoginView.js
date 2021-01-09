@@ -35,69 +35,67 @@ const LoginView = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const responseFacebook = (response) => {
-  
-    const LoginFacebook={
-      Email:response.email,
-      Name:response.name,
-      FacebookId:response.id
+
+    const LoginFacebook = {
+      Email: response.email,
+      Name: response.name,
+      FacebookId: response.id
     }
     console.log(LoginFacebook)
 
-    fetch(APIManager+'/api/loginFacebook', {
+    fetch(APIManager + '/api/loginFacebook', {
       method: 'post',
       headers: {
-      
+
         'Content-Type': 'application/json'
       },
-      body:  JSON.stringify(LoginFacebook)
+      body: JSON.stringify(LoginFacebook)
     })
-    .then(response => response.json())
-    .then(result => {
-       if (result.code==0) 
-       {
-           localStorage.setItem("Token",JSON.stringify(result.data))
-         
-          navigate('/app/dashboard', { replace: true });
-       }
-       else{
-         alert(`${result.message}`)
-       }
-    }
+      .then(response => response.json())
+      .then(result => {
+        if (result.code == 0) {
+          localStorage.setItem("Token", JSON.stringify(result.data))
 
-     );
+          navigate('/app/dashboard', { replace: true });
+        }
+        else {
+          alert(`${result.message}`)
+        }
+      }
+
+      );
   }
   const responseGoogle = (response) => {
-    const loginGoogle={
-      Email:response.profileObj.email,
-      Name:response.profileObj.name,
-      GoogleId:response.profileObj.googleId
+    const loginGoogle = {
+      Email: response.profileObj.email,
+      Name: response.profileObj.name,
+      GoogleId: response.profileObj.googleId
     }
     console.log(response)
 
-    fetch(APIManager+'/api/loginGoogle', {
+    fetch(APIManager + '/api/loginGoogle', {
       method: 'post',
       headers: {
-      
+
         'Content-Type': 'application/json'
       },
-      body:  JSON.stringify(loginGoogle)
+      body: JSON.stringify(loginGoogle)
     })
-    .then(response => response.json())
-    .then(result => {
-       if (result.code==0) 
-       {
-           localStorage.setItem("Token",JSON.stringify(result.data))
-           dispatch({
-             type:'LOGIN'           
-           });
+      .then(response => response.json())
+      .then(result => {
+        if (result.code == 0) {
+          localStorage.setItem("Token", JSON.stringify(result.data))
+          dispatch({
+            type: 'LOGIN'
+          });
           navigate('/app/dashboard', { replace: true });
-       }
-       else{
-         alert(`${result.message}`)
-       }
-    }
+        }
+        else {
+          alert(`${result.message}`)
+        }
+      }
 
-     );
+      );
   }
   return (
     <Page
@@ -117,39 +115,38 @@ const LoginView = () => {
               password: ''
             }}
             validationSchema={Yup.object().shape({
-              username: Yup.string().min(2,'Too Short').max(70).required('Too Long'),
+              username: Yup.string().min(2, 'Too Short').max(70).required('Too Long'),
               password: Yup.string().max(255).required('Password is required')
             })}
-            onSubmit={(values) => {       
-                const login = JSON.stringify({'username': values.username, 'password': values.password })
-                fetch(APIManager+'/api/login', {
-                 method: 'post',
-                 headers: {                 
-                   'Content-Type': 'application/json'
-                 },
-                 body: login
-               })
-               .then(response => response.json())
-               .then(result => {
-                  if (result.code==0) 
-                  {
-                      localStorage.setItem("Token",JSON.stringify(result.data))
-                      dispatch({
-                        type:'LOGIN'
-                        
-                      });
-                      dispatch({
-                        type:'LOGIN',username: values.username          
-                      });
-                     navigate('/app/dashboard', { replace: true });
+            onSubmit={(values) => {
+              const login = JSON.stringify({ 'username': values.username, 'password': values.password })
+              fetch(APIManager + '/api/login', {
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: login
+              })
+                .then(response => response.json())
+                .then(result => {
+                  if (result.code == 0) {
+                    localStorage.setItem("Token", JSON.stringify(result.data))
+                    dispatch({
+                      type: 'LOGIN'
+
+                    });
+                    dispatch({
+                      type: 'LOGIN', username: values.username
+                    });
+                    navigate('/app/dashboard', { replace: true });
                   }
-                  else{
+                  else {
                     alert(`${result.message}`)
                   }
-               }
+                }
 
                 );
-             
+
             }}
           >
             {({
@@ -186,55 +183,55 @@ const LoginView = () => {
                     xs={12}
                     md={6}
                   >
-                      
-                     <FacebookLogin
-                        appId="805757080210462"                       
-                        fields="name,email,picture"
-                       
-                        callback={responseFacebook}
-                        render={renderProps => (
-                          <Button
+
+                    <FacebookLogin
+                      appId="805757080210462"
+                      fields="name,email,picture"
+
+                      callback={responseFacebook}
+                      render={renderProps => (
+                        <Button
                           color="primary"
                           fullWidth
-                          
-                           startIcon={<FacebookIcon />}
-                           onClick={renderProps.onClick}s
+
+                          startIcon={<FacebookIcon />}
+                          onClick={renderProps.onClick} s
                           size="large"
                           variant="contained"
                         >
-                         
-                         Login with Facebook
-                        </Button>
-  )} 
-/>
 
-                   
+                          Login with Facebook
+                        </Button>
+                      )}
+                    />
+
+
                   </Grid>
                   <Grid
                     item
                     xs={12}
                     md={6}
                   >
-                     <GoogleLogin
-    clientId="150788904130-4n1uafts882g9bcd9l6eqsl1omk1kspv.apps.googleusercontent.com"
-    render={renderProps => (
-      
-      <Button
-                      fullWidth
-                      startIcon={<GoogleIcon />}
-                      onClick={renderProps.onClick}
-                      size="large"
-                      variant="contained"
-                    >
-                      Login with Google
-                    </Button>
-      )}
-    buttonText="Login"
-    onSuccess={responseGoogle}
-    onFailure={responseGoogle}
-    cookiePolicy={'single_host_origin'}
-  />
-                  
+                    <GoogleLogin
+                      clientId="150788904130-4n1uafts882g9bcd9l6eqsl1omk1kspv.apps.googleusercontent.com"
+                      render={renderProps => (
+
+                        <Button
+                          fullWidth
+                          startIcon={<GoogleIcon />}
+                          onClick={renderProps.onClick}
+                          size="large"
+                          variant="contained"
+                        >
+                          Login with Google
+                        </Button>
+                      )}
+                      buttonText="Login"
+                      onSuccess={responseGoogle}
+                      onFailure={responseGoogle}
+                      cookiePolicy={'single_host_origin'}
+                    />
+
                   </Grid>
                 </Grid>
                 <Box
