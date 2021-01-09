@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -34,12 +33,17 @@ const TopBar = ({
   const [notifications] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {connection}=rest;
+  const {userNameCurrent} =rest;
   const LogOut=()=>{
+    connection && connection.invoke("offline", userNameCurrent);
     localStorage.setItem("Token",'');
+    
     dispatch({
       type:'LOGOUT'     
     });
-    // navigate('/login', { replace: true });
+    window.location.reload();
+    //navigate('/login', { replace: true });
   }
   return (
     <AppBar

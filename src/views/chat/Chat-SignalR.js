@@ -29,12 +29,13 @@ export default () => {
     alert("send")
 }
   useEffect(async () => {
-
+    var token = JSON.parse(localStorage.getItem("Token")).token;
     const socketConnection = new HubConnectionBuilder()
       .configureLogging(LogLevel.Debug)
       .withUrl(APIManager + "/chatHub", {
         skipNegotiation: true,
-        transport: HttpTransportType.WebSockets
+        transport: HttpTransportType.WebSockets,
+        accessTokenFactory: () => token
       })
       .build();
     await socketConnection.start();

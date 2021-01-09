@@ -10,12 +10,12 @@ export const AuthReducer=(state  = CurrenState,action)=>{
         case 'LOGIN':
          
           return {
-           ...state,isLoggedIn: true,userName:action.username
+           ...state,isLoggedIn: true, userName:action.username
           };
           case 'LOGOUT':
           
           return {
-           ...state,isLoggedIn: false
+           ...state, isLoggedIn: false,userName:""
           };
   
           default:
