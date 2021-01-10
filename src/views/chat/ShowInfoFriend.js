@@ -6,6 +6,7 @@ import Fade from '@material-ui/core/Fade';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import APIManager from 'src/utils/LinkAPI';
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -23,10 +24,38 @@ const useStyles = makeStyles((theme) => ({
 export default function TransitionsModal({name}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
+  const [userInfo,setUserInfo] = React.useState({username:'',cup:'',rank:'',rateWin:'',totalGame:'',createDate:''});
   const handleOpen = () => {
     setOpen(true);
-  };
+    let getToken = localStorage.getItem("Token");
+    if (getToken){
+     
+      var token = JSON.parse(getToken);
+      token = token.token
+      const requestURL = APIManager + "/api/GetInfoByUserName";
+   
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify( name )
+      };         
+      fetch(requestURL, requestOptions)
+      .then(response => response.json())
+      .then(res => 
+      {
+          if (res!=null)
+          {
+            console.log(res);
+            setUserInfo(res);
+            
+          }
+             
+      })
+  }
+}
 
   const handleClose = () => {
     setOpen(false);
@@ -55,8 +84,12 @@ export default function TransitionsModal({name}) {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">react-transition-group animates me.</p>
+            <h2 id="transition-modal-title">Thông tin người chơi</h2>
+            <p id="transition-modal-description">Tên: {userInfo.username}</p>
+            <p id="transition-modal-description">Ngày tham gia: {userInfo.createDate}</p>
+            <p id="transition-modal-description">Số trận đã chơi: {userInfo.totalGame}</p>
+            <p id="transition-modal-description">Tỉ lệ thắng: {userInfo.rateWin}</p>
+            <p id="transition-modal-description">Cấp bậc: {userInfo.rank}</p>      
           </div>
         </Fade>
       </Modal>
