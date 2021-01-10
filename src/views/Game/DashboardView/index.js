@@ -10,6 +10,7 @@ import BoardsContext from 'src/context/BoardsContext'
 import APIManager from 'src/utils/LinkAPI'
 import SimpleModal from 'src/views/Plugin/modal'
 import ChatSignalR from 'src/views/chat/Chat-SignalR'
+import ModalJoinRoom from 'src/views/Game/DashboardView/ModaleJoinRoom'
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -82,8 +83,10 @@ const Dashboard = () => {
       >
 
         <Container maxWidth={false}>
-
+          <div>
           <SimpleModal boards={boards} setBoards={setBoards} />
+          <ModalJoinRoom></ModalJoinRoom>
+          </div>
 
           <br />
           <Grid

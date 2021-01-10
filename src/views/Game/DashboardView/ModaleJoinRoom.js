@@ -6,7 +6,9 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
+import FindInPageIcon from '@material-ui/icons/FindInPage';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import PasswordDialog from 'src/views/Plugin/PasswordDialog'
 
 import {
 
@@ -14,13 +16,14 @@ import {
 
 } from '@material-ui/core';
 import APIManager from 'src/utils/LinkAPI';
+import { TrainRounded } from '@material-ui/icons';
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
 
 function getModalStyle() {
   const top = 50 + rand();
-  const left = 50+ rand();
+  const left = 50 + rand();
 
   return {
     top: `${top}%`,
@@ -39,20 +42,28 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }));
-
 export default function SimpleModal(props) {
   console.log(props)
-  const { boards, setBoards } = props;
+  //const { boards, setBoards } = props;
+  const [open, setOpen] = useState(false);
+
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
-  const [values, setValues] = React.useState({ timeOfTurn: "30", password: "" });
+  const [hidden, setHidden] = React.useState(true);
+  const [values, setValues] = React.useState({ Id: "" });
   const handleOpen = () => {
-    setValues({ timeOfTurn: "30", password: "" });
+    setValues({ Id: "" });
     setOpen(true);
   };
-
+  function openPasswordModal(board) {
+    debugger
+    return (
+      <div>
+        <PasswordDialog board={board} ></PasswordDialog>
+      </div>
+    )
+  }
   const handleClose = () => {
     setOpen(false);
   };
@@ -65,13 +76,12 @@ export default function SimpleModal(props) {
   };
   const navigate = useNavigate();
 
-  const saveBoard = () => {
-    if (values.timeOfTurn != '' && values.timeOfTurn > 10 && values.timeOfTurn < 120) {
-      handleClose();
+  const joinBoard = () => {
+    if (values.Id != '') {
       debugger
       var token = JSON.parse(localStorage.getItem("Token")).token;
 
-      const requestURL = APIManager + "/api/Board/CreateBoard";
+      const requestURL = APIManager + "/api/Board/JoinBoard";
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -86,16 +96,21 @@ export default function SimpleModal(props) {
         .then(response => response.json())
         .then(result => {
           if (result.code == 0) {
-            navigate(`/app/BoardGame/${result.data.id}`, { replace: true });
+            navigate(`/app/BoardGame/${values.Id}`, { replace: true });
           }
           else {
-            alert("Tạo bàn thất bại")
+            if (result.message == "Has password") {
+              setHidden(false)
+            }
+            else {
+              alert(result.message)
+            }
           }
 
         });
     }
     else {
-      alert("Thời gian giữa các turn phải trong khoảng 10 đến 120 s")
+      alert("Bạn chưa nhập room Id")
     }
 
   }
@@ -106,39 +121,36 @@ export default function SimpleModal(props) {
       </div>
       <TextField
         fullWidth
-
-        label="Time Of Turn(s)"
-        name="timeOfTurn"
+        label="Id Room"
+        name="Id"
         onChange={handleChange}
         required
-        value={values.timeOfTurn}
+        value={values.Id}
         variant="outlined"
-
       />
-      <TextField
+      <TextField     
         fullWidth
+        style = {hidden ? {display :"none"} : {display:""}} 
         label="Password"
         name="password"
         onChange={handleChange}
         value={values.password}
         variant="outlined"
-
       />
       <div style={{ marginTop: "5px", display: "flex", justifyContent: "center" }}>
-      <Button variant="contained" color="primary" onClick={saveBoard} >
-        Create <SportsEsportsIcon></SportsEsportsIcon>
-      </Button>
+        <Button variant="contained" color="primary" onClick={joinBoard} >
+          Join Room <SportsEsportsIcon></SportsEsportsIcon>
+        </Button>
       </div>
-     
 
     </div>
   );
 
   return (
-    <div style= {{display:"inline"}}>
+    <div style={{ display: "inline", paddingLeft: "5px" }}>
 
       <Button variant="contained" color="primary" onClick={handleOpen}>
-        <FiberNewIcon></FiberNewIcon> Room
+        <FindInPageIcon></FindInPageIcon> Room
       </Button>
       <Modal
         open={open}
