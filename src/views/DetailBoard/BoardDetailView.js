@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const BoardDetailView = ( ) => {
  
-
+debugger
 
   const params = useParams();
 

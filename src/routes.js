@@ -12,6 +12,7 @@ import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import BoardDetailView from 'src/views/DetailBoard/BoardDetailView';
 const routes = (isLoggedIn)=>{
+  debugger
   return [
   {
     path: 'app',
@@ -22,7 +23,6 @@ const routes = (isLoggedIn)=>{
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
-
       { path : 'BoardGame/:id', element: <BoardDetailView /> },
       { path: '*', element: <Navigate to="/404" /> }
     
