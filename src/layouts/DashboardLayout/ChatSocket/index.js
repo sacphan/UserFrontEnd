@@ -65,10 +65,13 @@ const NavBar = ({ onMobileClose, openMobile,userNameOnline }) => {
   const location = useLocation();
  
   
-  useEffect(() => {
-    if (openMobile && onMobileClose) {
-      onMobileClose();
+  useEffect( () => {
+    async function InitMobile(){
+      if (openMobile && onMobileClose) {
+        onMobileClose();
+      }
     }
+    InitMobile()
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);

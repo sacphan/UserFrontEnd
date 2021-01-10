@@ -9,7 +9,7 @@ import BoardGame from './BoardGame';
 import BoardsContext from 'src/context/BoardsContext'
 import APIManager from 'src/utils/LinkAPI'
 import SimpleModal from 'src/views/Plugin/modal'
-import ChatSignalR from 'src/views/chat/Chat-SignalR'
+
 import ModalJoinRoom from 'src/views/Game/DashboardView/ModaleJoinRoom'
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,7 +99,7 @@ const Dashboard = () => {
 
 
         </Container>
-        <ChatSignalR />
+    
       </Page>
     </BoardsContext.Provider>
   );

@@ -10,9 +10,11 @@ import APIManager from 'src/utils/LinkAPI';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 
-const App = () => {
+const App =  () => {
   const dispatch = useDispatch();
-  const isLogedIn  = useSelector((state) => state.AuthReducer.isLoggedIn);
+  const isLogedIn = useSelector((state) => state.AuthReducer.isLoggedIn);
+
+  
   useEffect(() => {
     async function Init() {
       let getToken = localStorage.getItem("Token");
@@ -44,7 +46,7 @@ const App = () => {
   },[]);
  
 
-  const routing = useRoutes(routes(isLogedIn));
+  const routing = useRoutes(routes( isLogedIn));
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
