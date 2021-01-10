@@ -34,21 +34,17 @@ export default function ListChat({userNameOnline}) {
   listComponentOnline.push(
   <InforFriend name={item}></InforFriend>
        )}
-       )
+)
 
   return (
- 
-    <List
-    
+    <List   
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
           Danh sách bạn bè online
-        </ListSubheader>
-      
-      }
-     
+        </ListSubheader>      
+      }    
       className={classes.root}
     >
     {listComponentOnline}         
