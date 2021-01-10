@@ -23,7 +23,7 @@ const routes = (isLoggedIn)=>{
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
       { path: 'detailtable/:id', element: <BoardDetailView /> },
-   
+      { path : 'BoardGame/:id', element: <BoardDetailView /> },
       { path: '*', element: <Navigate to="/404" /> }
     
     ]
