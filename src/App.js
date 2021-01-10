@@ -16,8 +16,7 @@ const App = () => {
   useEffect(() => {
     async function Init() {
       let getToken = localStorage.getItem("Token");
-      if (getToken){
-       
+      if (getToken){       
         var token = JSON.parse(getToken);
         token = token.token
         const requestURL = APIManager + "/api/isLogin";
@@ -27,9 +26,7 @@ const App = () => {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
           }
-        };
-        
-       
+        };              
         fetch(requestURL, requestOptions)
         .then(response => response.json())
         .then(res => 
@@ -39,11 +36,7 @@ const App = () => {
               dispatch({
                 type:'LOGIN',username: res.username          
               });
-            }
-              
-  
-            
-      
+            }      
         })
       }
     }
