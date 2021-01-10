@@ -67,7 +67,7 @@ const BoardGame = ({ className, ...rest }) => {
     variant="outlined"
   />
   }
-  if (board.password!=null){
+  if (board.password!=null && board.password != ""){
     return(
     <Card
       className={clsx(classes.root, className)}
