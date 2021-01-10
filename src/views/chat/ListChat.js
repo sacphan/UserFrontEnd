@@ -32,7 +32,7 @@ export default function ListChat({userNameOnline}) {
   var listComponentOnline=[];
   userNameOnline.map((item)=>{
   listComponentOnline.push(
-  <InforFriend name={item}></InforFriend>
+  <InforFriend key={item} name={item}></InforFriend>
        )}
 )
 
