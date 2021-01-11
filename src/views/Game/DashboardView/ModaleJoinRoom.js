@@ -56,14 +56,7 @@ export default function SimpleModal(props) {
     setValues({ Id: "" });
     setOpen(true);
   };
-  function openPasswordModal(board) {
-    debugger
-    return (
-      <div>
-        <PasswordDialog board={board} ></PasswordDialog>
-      </div>
-    )
-  }
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -117,7 +110,7 @@ export default function SimpleModal(props) {
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <div>
-        <h2 style={{ marginTop: "2px", display: "flex", justifyContent: "center" }} id="simple-modal-title">Create room</h2>
+        <h2 style={{ marginTop: "2px", display: "flex", justifyContent: "center" }} id="simple-modal-title">Join room</h2>
       </div>
       <TextField
         fullWidth
