@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
-
   const [boards, setBoards] = useState(Array());
   let listBoard = [];
   useEffect(() => {
@@ -68,7 +67,7 @@ const Dashboard = () => {
   }
 
   boards.map((item) => {
-    debugger
+    
     listBoard.push(renderBoard(item));
   })
 
@@ -87,7 +86,6 @@ const Dashboard = () => {
           <SimpleModal boards={boards} setBoards={setBoards} />
           <ModalJoinRoom></ModalJoinRoom>
           </div>
-
           <br />
           <Grid
             container
@@ -96,10 +94,7 @@ const Dashboard = () => {
             {listBoard}
 
           </Grid>
-
-
-        </Container>
-    
+        </Container>   
       </Page>
     </BoardsContext.Provider>
   );

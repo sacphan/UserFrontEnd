@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const BoardGame = ({ className, ...rest }) => {
+  
   const classes = useStyles();
   const {Name,setName} = useState('');
   const {board} = rest;

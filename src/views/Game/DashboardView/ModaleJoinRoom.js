@@ -57,7 +57,7 @@ export default function SimpleModal(props) {
     setOpen(true);
   };
   function openPasswordModal(board) {
-    debugger
+    
     return (
       <div>
         <PasswordDialog board={board} ></PasswordDialog>
@@ -78,7 +78,7 @@ export default function SimpleModal(props) {
 
   const joinBoard = () => {
     if (values.Id != '') {
-      debugger
+      
       var token = JSON.parse(localStorage.getItem("Token")).token;
 
       const requestURL = APIManager + "/api/Board/JoinBoard";

@@ -47,6 +47,7 @@ const DashboardLayout = () => {
 
   const [userNameOnline, setUserNameOnline] = useState([]);
   const userNameCurrent = useSelector((state) => state.AuthReducer.userName);
+  
   useEffect( () => {
    
     async function InitChatHub() {
@@ -73,7 +74,7 @@ const DashboardLayout = () => {
     
   }, []);
   connection && connection.on("online", userOnline => {
-  
+    debugger
     setUserNameOnline(userOnline);
   });
   connection && connection.on("offline", userOnline => {

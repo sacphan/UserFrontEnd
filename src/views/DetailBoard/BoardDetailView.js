@@ -1,7 +1,7 @@
 import React, { useState,useEffect  } from 'react';
 import { useParams } from 'react-router-dom';
 
-
+import Game from 'src/views/RoomGame/Game'
 import { makeStyles } from '@material-ui/core/styles';
 
 
@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const BoardDetailView = ( ) => {
  
-debugger
+
 
   const params = useParams();
 
@@ -17,7 +17,6 @@ debugger
   useEffect(() => {
     async function fetchBoardList() {         
       const {id} = params;
-      alert(id)
       // const token = JSON.parse(localStorage.getItem("Token")).token;
     
     
@@ -48,7 +47,7 @@ debugger
   }, []);
   
   return (
-   <div>123</div>
+   <Game></Game>
   );
   
 };
