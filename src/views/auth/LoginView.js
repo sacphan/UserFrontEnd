@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   }
   
 }));
-debugger
+
 const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();

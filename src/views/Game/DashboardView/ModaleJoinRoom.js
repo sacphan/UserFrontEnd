@@ -56,7 +56,6 @@ export default function SimpleModal(props) {
     setValues({ Id: "" });
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -71,7 +70,7 @@ export default function SimpleModal(props) {
 
   const joinBoard = () => {
     if (values.Id != '') {
-      debugger
+      
       var token = JSON.parse(localStorage.getItem("Token")).token;
 
       const requestURL = APIManager + "/api/Board/JoinBoard";

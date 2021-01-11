@@ -105,7 +105,7 @@ const Dashboard = () => {
   }
 
   boards.map((item) => {
-    debugger
+    
     listBoard.push(renderBoard(item));
   })
 
@@ -137,10 +137,7 @@ const Dashboard = () => {
             {listBoard}
 
           </Grid>
-
-
         </Container>
-
       </Page>
     </BoardsContext.Provider>
   );

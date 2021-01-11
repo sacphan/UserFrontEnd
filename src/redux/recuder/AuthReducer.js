@@ -1,6 +1,6 @@
 let CurrenState;
 if ( localStorage.getItem("Token")){
-     debugger
+     
     var getToken= localStorage.getItem("Token");
     var token = JSON.parse(getToken);
     if(token.exprire > new Date().toLocaleString()){

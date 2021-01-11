@@ -68,7 +68,7 @@ export default function SimpleModal(props) {
   const saveBoard = () => {
     if (values.timeOfTurn != '' && values.timeOfTurn > 10 && values.timeOfTurn < 120) {
       handleClose();
-      debugger
+      
       var token = JSON.parse(localStorage.getItem("Token")).token;
 
       const requestURL = APIManager + "/api/Board/CreateBoard";

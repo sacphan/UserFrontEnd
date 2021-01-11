@@ -31,7 +31,7 @@ function SimpleDialog(props) {
   const navigate = useNavigate();
 
   const JoinGame = ()=>{
-      debugger
+      
     var token = JSON.parse(localStorage.getItem("Token"));
     var pass = document.getElementById("password").value;
     board.password = pass;
