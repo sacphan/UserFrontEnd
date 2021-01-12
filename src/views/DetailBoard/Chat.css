@@ -1,0 +1,87 @@
+/* Chat box */
+
+.messenger {
+    margin-left: 20px !important;
+    margin-top: 10px !important;
+    background: white;
+    width: 100%;
+    font-size: 17px;
+    border-radius: 40px 40px 25px 25px;
+    margin: 6px;
+    box-shadow: 3px 3px 3px 3px lightslategray;
+    /* position: fixed;
+    bottom: 0;
+    right: 0; */
+    width: 300px;
+    max-height: 400px;
+    padding-bottom: 0px;
+}
+
+.message-header {
+    display: flex;
+    padding: 20px 10px;
+    height: 30px;
+    justify-content: center;
+    width: 100%;
+    border-bottom: 1px solid rgb(41, 41, 41);
+    align-items: center;
+}
+
+.message-body {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 300px;
+}
+
+.message-text {
+    width: fit-content;
+    padding: 6px 15px;
+    border-radius: 50px;
+    background: royalblue;
+    color: white;
+    white-space: pre-line;
+    word-wrap: break-word;
+    word-break: break-all;
+    max-width: 65%;
+    text-align: left;
+}
+
+.message-time {
+    font-size: 12px;
+    display: inline;
+}
+
+
+/* Message send vs input */
+
+.message-input {
+    position: absolute;
+    bottom: 0;
+}
+
+.messenger input {
+    border-radius: 50px;
+    margin-left: 10px;
+    margin-bottom: -20px;
+    text-indent: 10px;
+}
+
+.messenger button {
+    border-radius: 50px;
+    margin-right: 10px;
+}
+
+
+/* Button style */
+
+.myButton {
+    background: #4CAF50;
+    border-radius: 20px;
+    margin-bottom: 2px;
+    font-size: 18px;
+    color: white;
+    width: 90%;
+}

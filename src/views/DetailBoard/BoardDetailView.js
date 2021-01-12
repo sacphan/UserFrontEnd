@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import Game from 'src/views/RoomGame/Game'
 import { makeStyles } from '@material-ui/core/styles';
-
+// import ChatBox from './ChatBox'
 
 
 
@@ -47,7 +47,10 @@ const BoardDetailView = ( ) => {
   }, []);
   
   return (
+    <div>
    <Game></Game>
+  {/* <ChatBox></ChatBox> */}
+    </div>
   );
   
 };
