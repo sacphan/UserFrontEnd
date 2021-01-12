@@ -1,23 +1,24 @@
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 20px;
-  }
-  
-  ol, ul {
+}
+
+ol,
+ul {
     padding-left: 30px;
-  }
-  
-  .board-row:after {
+}
+
+.board-row:after {
     clear: both;
     content: "";
     display: table;
-  }
-  
-  .status {
+}
+
+.status {
     margin-bottom: 10px;
-  }
-  
-  .square {
+}
+
+.square {
     background: #fff;
     border: 1px solid #999;
     float: left;
@@ -30,28 +31,82 @@ body {
     padding: 0;
     text-align: center;
     width: 34px;
-  }
-  
-  .square:focus {
+}
+
+.square:focus {
     outline: none;
-  }
-  
-  .kbd-navigation .square:focus {
+}
+
+.kbd-navigation .square:focus {
     background: #ddd;
-  }
-  
-  .game {
+}
+
+.game {
     display: flex;
     flex-direction: row;
-  }
-  
-  .game-info {
+    min-width: 1080px !important;
+}
+
+.wrap-right{
+    display: flex;
+    flex-direction: column;
+}
+
+.game-info {
+    margin-top: 10px;
     margin-left: 20px;
-  }
-  .bold{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(197 197 197 / 64%);
+    min-width: 250px;
+    padding: 20px;
+    height: 280px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 5px 0px rgba(255, 255, 255, 0.75);
+    transition: all 500ms;
+}
+
+.img-player{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.wrap-time{
+    display: flex;
+    justify-content: center;
+
+}
+
+.time-down{
+    padding:  10px;
+    width: 50px;
+    height:  50px;
+    border-radius: 100px !important;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(11, 172, 212);
+    border-radius: 5px;
+    color: black;
+}
+
+.btn-right {
+    
+    color: rgb(0, 0, 0);
     font-weight: bold;
-  }
-  .squareHightLine
-  {
-    Color:red;
-  }
+    font-size: 15px;
+    cursor: pointer;
+    padding: 5px 10px;
+    user-select: none;
+    border-radius: 5px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.squareHightLine {
+    Color: red;
+}

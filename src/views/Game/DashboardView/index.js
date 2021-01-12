@@ -9,6 +9,9 @@ import BoardGame from './BoardGame';
 import BoardsContext from 'src/context/BoardsContext'
 import APIManager from 'src/utils/LinkAPI'
 import SimpleModal from 'src/views/Plugin/modal'
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
+import Button from '@material-ui/core/Button';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import ModalJoinRoom from 'src/views/Game/DashboardView/ModaleJoinRoom'
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
   const [boards, setBoards] = useState(Array());
   let listBoard = [];
   useEffect(() => {
@@ -44,23 +48,57 @@ const Dashboard = () => {
 
     fetchBoardList();
   }, []);
-  const renderBoard = (item) => {
-    if (item.password!= null){
-      return <Grid key={item.id} item
-    lg={3}
-    sm={6}
-    xl={3}
-    xs={12}
-  >      
-    <BoardGame board={item} />
-  </Grid>
+  const joinBoardNow = () => {
+    {
+      debugger
+      var token = JSON.parse(localStorage.getItem("Token")).token;
+
+      const requestURL = APIManager + "/api/Board/JoinBoardNow";
+      const requestOptions = {
+        method: 'Get',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+          'My-Custom-Header': 'foobar'
+        },
+      };
+
+      fetch(requestURL, requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          if (result.code == 0) {
+            navigate(`/app/BoardGame/${result.data.id}`, { replace: true });
+          }
+          else {
+            if (result.message == "Has password") {
+            }
+            else {
+              alert(result.message)
+            }
+          }
+
+        });
+    }
+
+
   }
+  const renderBoard = (item) => {
+    if (item.password != null) {
+      return <Grid key={item.id} item
+        lg={3}
+        sm={6}
+        xl={3}
+        xs={12}
+      >
+        <BoardGame board={item} />
+      </Grid>
+    }
     return <Grid key={item.id} item
       lg={3}
       sm={6}
       xl={3}
       xs={12}
-    >      
+    >
       <BoardGame board={item} />
     </Grid>
 
@@ -83,8 +121,13 @@ const Dashboard = () => {
 
         <Container maxWidth={false}>
           <div>
-          <SimpleModal boards={boards} setBoards={setBoards} />
-          <ModalJoinRoom></ModalJoinRoom>
+            <SimpleModal boards={boards} setBoards={setBoards} />
+            <ModalJoinRoom></ModalJoinRoom>
+            <div style={{display: "inline", paddingLeft: "5px" }}>
+              <Button variant="contained" color="primary" onClick={joinBoardNow} >
+                Chơi nhanh <SportsEsportsIcon></SportsEsportsIcon>
+              </Button>
+            </div>
           </div>
           <br />
           <Grid
@@ -94,7 +137,7 @@ const Dashboard = () => {
             {listBoard}
 
           </Grid>
-        </Container>   
+        </Container>
       </Page>
     </BoardsContext.Provider>
   );
