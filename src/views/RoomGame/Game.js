@@ -2,7 +2,9 @@ import './css/RoomGame.css';
 import React, { useState, useRef } from 'react';
 import Board from './Board'
 import TimerIcon from '@material-ui/icons/Timer';
-import ChatBox from "../DetailBoard/ChatBox"
+import {MessageBox} from "../DetailBoard/ChatBox"
+import { makeStyles } from '@material-ui/core/styles';
+
 export default function Game(props) {
 
   const startRef = useRef(null)
@@ -149,7 +151,7 @@ export default function Game(props) {
 
 
         </div>
-        <ChatBox />
+        <MessageBox />
       </div>
 
     </div>

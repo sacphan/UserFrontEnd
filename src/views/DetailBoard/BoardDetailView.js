@@ -47,7 +47,7 @@ const BoardDetailView = ( ) => {
   }, []);
   
   return (
-    <div>
+    <div style={{overflowX: 'hidden'}}>
    <Game></Game>
   {/* <ChatBox></ChatBox> */}
     </div>
