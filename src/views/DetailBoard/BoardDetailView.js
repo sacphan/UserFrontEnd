@@ -73,7 +73,7 @@ const BoardDetailView = ( ) => {
   }, []);
   
   return (
-    <div>
+    <div style={{overflowX: 'hidden'}}>
    <Game start={start} setStart={setStart} ready={ready} setReady={setReady} game={game}></Game>
   {/* <ChatBox></ChatBox> */}
     </div>
