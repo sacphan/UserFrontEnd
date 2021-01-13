@@ -45,17 +45,18 @@ const RegisterView = () => {
             initialValues={{
               email: '',
               firstName: '',
-              lastName: '',
+              fullname: '',
               password: '',
+              confirmPassword: '',
               policy: false
             }}
             validationSchema={
               Yup.object().shape({
-                //email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+                email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                 username: Yup.string().max(255).required('User name is required'),
-                // firstName: Yup.string().max(255).required('First name is required'),
-                // lastName: Yup.string().max(255).required('Last name is required'),
-                password: Yup.string().max(255).required('password is required'),
+                fullname: Yup.string().max(255).required('Full name is required'),
+                password: Yup.string().max(255).required('Password is required'),
+                confirmPassword: Yup.string().max(255).required('Password is required').oneOf([Yup.ref('password'), null], 'Passwords must match'),
                 policy: Yup.boolean().oneOf([true], 'This field must be checked')
               })
             }
@@ -74,7 +75,7 @@ const RegisterView = () => {
                   
                  'Content-Type': 'application/json'
                },
-               body: JSON.stringify({'username': values.username, 'password': values.password })
+               body: JSON.stringify({'username': values.username, 'password': values.password, 'email': values.email, 'fullname':values.fullname })
              })
              .then(response => response.json())
              .then(result => {
@@ -141,7 +142,7 @@ const RegisterView = () => {
                   value={values.lastName}
                   variant="outlined"
                 /> */}
-                {/* <TextField
+                <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
                   helperText={touched.email && errors.email}
@@ -153,7 +154,7 @@ const RegisterView = () => {
                   type="email"
                   value={values.email}
                   variant="outlined"
-                /> */}
+                />
                  <TextField
                   error={Boolean(touched.username && errors.username)}
                   fullWidth
@@ -167,6 +168,18 @@ const RegisterView = () => {
                   value={values.username}
                   variant="outlined"
                 />
+                 <TextField
+                  error={Boolean(touched.fullname && errors.fullname)}
+                  fullWidth
+                  helperText={touched.fullname && errors.fullname}
+                  label="Full name"
+                  margin="normal"
+                  name="fullname"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.fullname}
+                  variant="outlined"
+                /> 
                 <TextField
                   error={Boolean(touched.password && errors.password)}
                   fullWidth
@@ -178,6 +191,19 @@ const RegisterView = () => {
                   onChange={handleChange}
                   type="password"
                   value={values.password}
+                  variant="outlined"
+                />
+                <TextField
+                  error={Boolean(touched.confirmPassword && errors.confirmPassword)}
+                  fullWidth
+                  helperText={touched.confirmPassword && errors.confirmPassword}
+                  label="ConfirmPassword"
+                  margin="normal"
+                  name="confirmPassword"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="password"
+                  value={values.confirmPassword}
                   variant="outlined"
                 />
                 <Box

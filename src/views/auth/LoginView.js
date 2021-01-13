@@ -56,7 +56,13 @@ const LoginView = () => {
       .then(result => {
         if (result.code == 0) {
           localStorage.setItem("Token", JSON.stringify(result.data))
+          dispatch({
+            type: 'LOGIN'
 
+          });
+          dispatch({
+            type: 'LOGIN', username: result.data.username
+          });
           navigate('/app/dashboard', { replace: true });
         }
         else {
@@ -72,9 +78,8 @@ const LoginView = () => {
       Name: response.profileObj.name,
       GoogleId: response.profileObj.googleId
     }
-    console.log(response)
 
-    fetch(APIManager + '/api/loginGoogle', {
+    fetch(APIManager + '/api/LoginGoogle', {
       method: 'post',
       headers: {
 
@@ -88,6 +93,10 @@ const LoginView = () => {
           localStorage.setItem("Token", JSON.stringify(result.data))
           dispatch({
             type: 'LOGIN'
+
+          });
+          dispatch({
+            type: 'LOGIN', username: result.data.username
           });
           navigate('/app/dashboard', { replace: true });
         }
@@ -186,7 +195,7 @@ const LoginView = () => {
                   >
 
                     <FacebookLogin
-                      appId="805757080210462"
+                      appId="915212662198094"
                       fields="name,email,picture"
 
                       callback={responseFacebook}
@@ -214,13 +223,12 @@ const LoginView = () => {
                     md={6}
                   >
                     <GoogleLogin
-                      clientId="150788904130-4n1uafts882g9bcd9l6eqsl1omk1kspv.apps.googleusercontent.com"
+                      clientId="509889973923-8fcgtvlupcepsojk67pl8s6r48n7tcmu.apps.googleusercontent.com"
                       render={renderProps => (
-
                         <Button
+                        onClick={renderProps.onClick} disabled={renderProps.disabled}
                           fullWidth
                           startIcon={<GoogleIcon />}
-                          onClick={renderProps.onClick}
                           size="large"
                           variant="contained"
                         >
@@ -230,7 +238,6 @@ const LoginView = () => {
                       buttonText="Login"
                       onSuccess={responseGoogle}
                       onFailure={responseGoogle}
-                      cookiePolicy={'single_host_origin'}
                     />
 
                   </Grid>

@@ -2,12 +2,10 @@ import './css/RoomGame.css';
 import React, { useState, useRef,useEffect } from 'react';
 import Board from './Board'
 import TimerIcon from '@material-ui/icons/Timer';
-import ChatBox from 'src/views/DetailBoard/ChatBox';
 import { useDispatch,useSelector } from 'react-redux'
 import APIManager from 'src/utils/LinkAPI';
 import {MessageBox} from "../DetailBoard/ChatBox"
 import { makeStyles } from '@material-ui/core/styles';
-import ChatBox from "../DetailBoard/ChatBox"
 
 import {
   HubConnectionBuilder,
