@@ -6,9 +6,11 @@ import Game from 'src/views/RoomGame/Game'
 import { makeStyles } from '@material-ui/core/styles';
 import APIManager from 'src/utils/LinkAPI';
 import { set } from 'lodash';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 const BoardDetailView = ( ) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [start,setStart]=React.useState(false);
   const [ready,setReady]=React.useState(false);
   const [game,setGame]= useState({userId1:0,userId2:0});
@@ -65,7 +67,10 @@ const BoardDetailView = ( ) => {
             setGame(result.data);
             console.log(result.data)
           }
-           
+          else {
+            alert(result.message);
+            navigate(`/app/dashboard/`, { replace: true });
+          } 
            
         });
     }
