@@ -1,9 +1,15 @@
 import './css/RoomGame.css';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import Board from './Board'
 import TimerIcon from '@material-ui/icons/Timer';
-import ChatBox from "../DetailBoard/ChatBox"
+import ChatBox from 'src/views/DetailBoard/ChatBox';
 import { useDispatch,useSelector } from 'react-redux'
+import APIManager from 'src/utils/LinkAPI';
+import {
+  HubConnectionBuilder,
+  LogLevel,
+  HttpTransportType
+} from "@microsoft/signalr";
 export default function Game(props)  {
   const startRef = useRef(null)
   const xinhoaRef = useRef(null)
@@ -15,10 +21,42 @@ export default function Game(props)  {
     const dispatch = useDispatch();
     const winner =  useSelector((state) => state.GameReducer.Winner);
     const hightLine = useSelector((state) => state.GameReducer.HightLine);
+    const IdUserCurrent= useSelector((state) => state.AuthReducer.id);
+    debugger
+    const UserName = useSelector((state) => state.AuthReducer.userName);
+    const {start,setStart}=props;
+    const {ready,setReady}=props;
+    const {game}=props;
+    const [turn,setTurn]= useState(1);
+    const [connection,setConnection]=useState();
     let value = -1;
 let backupvalue = -1;
     const MaxHeight = 20;
       const MaxWidth = 20;
+      //Mở Socket
+      useEffect( () => {
+        
+        async function InitSocket() {
+          const socketConnection = new HubConnectionBuilder()
+          .configureLogging(LogLevel.Debug)
+          .withUrl(APIManager + "/gameHub", {
+            skipNegotiation: true,
+            transport: HttpTransportType.WebSockets
+          })
+          .build();
+        await socketConnection.start();
+        setConnection(socketConnection);
+      
+        
+        
+        socketConnection.onclose(function () {
+          alert('Server has disconnected');
+        });
+        }
+        
+        InitSocket();
+        
+      }, []);
     const isBlock2Ends = (squares, type, competitor) => {
       const row = Math.floor(value / 20);
       const column = value % 20;
@@ -287,33 +325,61 @@ let backupvalue = -1;
     }
     const handleClick = (i) =>
     {
-      const history = historys.slice(0,stepNumber + 1);
-      const current = history[history.length -1];
-      const squares = current.squares.slice();
-      
-      value=i;
-      backupvalue = value;
-      //const stepNumber = history.length;
-      
-      if (winner||squares[i])
+      if(start)
       {
-        return;
+        const history = historys.slice(0,stepNumber + 1);
+        const current = history[history.length -1];
+        const squares = current.squares.slice();
+        
+        value=i;
+        backupvalue = value;
+        //const stepNumber = history.length;
+        
+        if (winner||squares[i])
+        {
+          return;
+        }
+        if (turn %2!=0 && IdUserCurrent==game.userId1)
+        {
+          squares[i]='X';
+        }
+        else
+        {
+          if (turn %2==0 && IdUserCurrent==game.userId2)
+          {
+            squares[i]='O';
+          }
+          else return
+        }
+
+       
+        var resultWinnerCal = calculateWinner(squares);
+        
+        if (resultWinnerCal.Winner)
+        {
+          dispatch({
+            type: 'Winner', Winner: resultWinnerCal.Winner,HightLine:resultWinnerCal.HightLine
+          });
+        }
+        let gameHistory={
+          GameId:game.id,
+          PlayerId:IdUserCurrent,
+          Turn: turn,
+          TimeOfTurn:game.board.timeOfTurn
+        }
+        console.log(gameHistory)
+        connection && connection.invoke("play",gameHistory);
+        
+        setHistorys(history.concat([{
+          squares:squares}]));
+          setStepNumber( stepNumber+1);
+          setxIsNext(!xIsNext);  
       }
-      squares[i] =xIsNext ? 'X' : 'O';
-      var resultWinnerCal = calculateWinner(squares);
-      
-      if (resultWinnerCal.Winner)
-      {
-        dispatch({
-          type: 'Winner', Winner: resultWinnerCal.Winner,HightLine:resultWinnerCal.HightLine
-        });
+      else
+      {  
+          alert("Chủ phòng chưa bắt đầu trận đấu")       
       }
       
-      
-      setHistorys(history.concat([{
-        squares:squares}]));
-        setStepNumber( stepNumber+1);
-        setxIsNext(!xIsNext);   
     }
     
   
@@ -326,6 +392,15 @@ let backupvalue = -1;
   const sortHistoryFunc = () => {
     setsortHistory(!sortHistory)
   }
+
+  connection && connection.on("ready", UserReady => {
+  
+    setReady(UserReady);
+  });
+  connection && connection.on("play", turnUser => {
+  
+    setTurn(turnUser);
+  });
 
   const history = historys;
   const current = history[stepNumber];
@@ -388,11 +463,31 @@ let backupvalue = -1;
 
           </div>
 
-          <span ref={startRef} onClick={() => {
-            ggRef.current.style.opacity = 1
-            startRef.current.style.opacity = 0
+          <span  ref={startRef} onClick={()=>{
+              if (IdUserCurrent==game.userId1)
+              {
+                if (!ready) alert("Bạn cùng phòng chưa sẵn sàng");
+                else
+                {
+                  ggRef.current.style.opacity = 1
+                  startRef.current.style.opacity = 0; 
+                  setStart(true);
+                }
+              }
+              else
+              {
+                debugger
+                if (IdUserCurrent==game.userId2)
+                {
+                  ggRef.current.style.opacity = 1
+                  startRef.current.style.opacity = 0; 
+                  connection && connection.invoke("Ready", game.userId1Navigation.username);
+                }
+              
+              }
+            
           }} style={{ display: 'flex', justifyContent: 'center', opacity: 1 }} >
-            <span className="btn-right" style={{ backgroundColor: "rgb(59, 218, 28)" }}>Bắt đầu</span>
+            <span className="btn-right" style={{ backgroundColor: "rgb(59, 218, 28)" }}>{IdUserCurrent==game.userId1?"Bắt đầu":"Sẵn sàng"}</span>
           </span>
 
           <div ref={ggRef} style={{ opacity: 0, display: 'flex', justifyContent: 'space-between' }}>

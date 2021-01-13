@@ -35,9 +35,9 @@ const App =  () => {
         {
             if (res!=null)
             {
-              
+              debugger
               dispatch({
-                type:'LOGIN',username: res.username          
+                type:'LOGIN',username: res.username,id:res.id          
               });
             }      
         })

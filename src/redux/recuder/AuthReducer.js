@@ -13,6 +13,7 @@ if ( localStorage.getItem("Token")){
 else {
      CurrenState={
         userName:"",
+        id:0,
         isLoggedIn:false
     }
 }
@@ -23,12 +24,12 @@ export const AuthReducer=(state  = CurrenState,action)=>{
         case 'LOGIN':
          
           return {
-           ...state,isLoggedIn: true, userName:action.username
+           ...state,isLoggedIn: true, userName:action.username,id:action.id
           };
           case 'LOGOUT':
           
           return {
-           ...state, isLoggedIn: false,userName:""
+           ...state, isLoggedIn: false,userName:"",id:0
           };
   
           default:
