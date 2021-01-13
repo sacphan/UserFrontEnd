@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import Game from 'src/views/RoomGame/Game'
 import { makeStyles } from '@material-ui/core/styles';
 import APIManager from 'src/utils/LinkAPI';
+import { set } from 'lodash';
 
 const BoardDetailView = ( ) => {
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ const BoardDetailView = ( ) => {
   
   return (
     <div style={{overflowX: 'hidden'}}>
-   <Game start={start} setStart={setStart} ready={ready} setReady={setReady} game={game}></Game>
+   <Game start={start} setStart={setStart} ready={ready} setReady={setReady} game={game} setGame={setGame}></Game>
   {/* <ChatBox></ChatBox> */}
     </div>
   );

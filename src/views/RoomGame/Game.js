@@ -2,10 +2,12 @@ import './css/RoomGame.css';
 import React, { useState, useRef,useEffect } from 'react';
 import Board from './Board'
 import TimerIcon from '@material-ui/icons/Timer';
+
 import { useDispatch,useSelector } from 'react-redux'
 import APIManager from 'src/utils/LinkAPI';
 import {MessageBox} from "../DetailBoard/ChatBox"
 import { makeStyles } from '@material-ui/core/styles';
+
 
 import {
   HubConnectionBuilder,
@@ -24,11 +26,12 @@ export default function Game(props)  {
     const winner =  useSelector((state) => state.GameReducer.Winner);
     const hightLine = useSelector((state) => state.GameReducer.HightLine);
     const IdUserCurrent= useSelector((state) => state.AuthReducer.id);
-    debugger
+    
     const UserName = useSelector((state) => state.AuthReducer.userName);
     const {start,setStart}=props;
     const {ready,setReady}=props;
-    const {game}=props;
+    const {game,setGame}=props;
+    const [gameHistory,setGameHistory]= useState([{}]);
     const [turn,setTurn]= useState(1);
     const [connection,setConnection]=useState();
     let value = -1;
@@ -341,6 +344,7 @@ let backupvalue = -1;
         {
           return;
         }
+        
         if (turn %2!=0 && IdUserCurrent==game.userId1)
         {
           squares[i]='X';
@@ -367,7 +371,8 @@ let backupvalue = -1;
           GameId:game.id,
           PlayerId:IdUserCurrent,
           Turn: turn,
-          TimeOfTurn:game.board.timeOfTurn
+          TimeOfTurn:game.board.timeOfTurn,
+          Postion:i
         }
         console.log(gameHistory)
         connection && connection.invoke("play",gameHistory);
@@ -375,7 +380,7 @@ let backupvalue = -1;
         setHistorys(history.concat([{
           squares:squares}]));
           setStepNumber( stepNumber+1);
-          setxIsNext(!xIsNext);  
+          setTurn(turn+1);  
       }
       else
       {  
@@ -399,13 +404,32 @@ let backupvalue = -1;
   
     setReady(UserReady);
   });
-  connection && connection.on("play", turnUser => {
+  connection && connection.on("start", UserReady => {
   
-    setTurn(turnUser);
+    setStart(UserReady);
+  });
+  connection && connection.on("play", gameHistory => {
+    debugger
+    const history = historys.slice(0,stepNumber + 1);
+    const current = history[history.length -1];
+    const squares = current.squares.slice();  
+    squares[gameHistory.postion] =(gameHistory.turn)%2==0? 'O':'X';
+    setHistorys(history.concat([{
+      squares:squares}]));
+    setTurn(gameHistory.turn+1);
+    setStepNumber( stepNumber+1);
+   
+
   });
 
   const history = historys;
-  const current = history[stepNumber];
+  
+  let current = history[0];
+  if (stepNumber<= (history.length -1))
+  {
+     current = history[stepNumber];
+  }
+ 
   const moves = history.map((step,move) => {
     
     const row = Math.floor((move-1)/20);
@@ -473,12 +497,13 @@ let backupvalue = -1;
                 {
                   ggRef.current.style.opacity = 1
                   startRef.current.style.opacity = 0; 
+                  connection && connection.invoke("start");
                   setStart(true);
                 }
               }
               else
               {
-                debugger
+                
                 if (IdUserCurrent==game.userId2)
                 {
                   ggRef.current.style.opacity = 1
