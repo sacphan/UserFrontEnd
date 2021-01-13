@@ -39,12 +39,9 @@ const StyledBadge = withStyles((theme) => ({
   },
 }))(Badge);
 
-export class MessageBox extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
+export function MessageBox(props){
 
-  render() {
+    const {game,IdUserCurrent} = props;
     return (
       <div className="wrap-message-box">
         <div className="header">
@@ -63,7 +60,7 @@ export class MessageBox extends PureComponent {
             />
           </StyledBadge>
           <span className="guest-infor">
-            <span className="name">James Rodriguez</span>
+            {/* <span className="name">{IdUserCurrent==game.userId1? `${game.userId1Navigation.username}` : `${game.userId2Navigation.username}`}</span> */}
             <span className="state">Đang hoạt động</span>
           </span>
         </div>
@@ -154,5 +151,5 @@ export class MessageBox extends PureComponent {
         </div>
       </div>
     );
-  }
+  
 }

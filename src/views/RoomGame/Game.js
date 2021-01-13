@@ -15,11 +15,12 @@ import {
   HttpTransportType
 } from "@microsoft/signalr";
 export default function Game(props)  {
+  
   const startRef = useRef(null)
   const xinhoaRef = useRef(null)
   const ggRef = useRef(null)
-    const [historys,setHistorys] = useState([{squares: Array(400).fill(null)}])
-    const [stepNumber,setStepNumber] = useState(0);
+    const [historys,setHistorys] = useState({squares: Array(400).fill(null),Turn:1,Message:{UserId:0,message:""}},)
+    //const [stepNumber,setStepNumber] = useState(0);
     const [xIsNext,setxIsNext] = useState(true);
     const [sortHistory,setsortHistory] = useState(true);
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export default function Game(props)  {
     const {ready,setReady}=props;
     const {game,setGame}=props;
     const [gameHistory,setGameHistory]= useState([{}]);
-    const [turn,setTurn]= useState(1);
+    
     const [connection,setConnection]=useState();
     let value = -1;
 let backupvalue = -1;
@@ -40,8 +41,9 @@ let backupvalue = -1;
       const MaxWidth = 20;
       //Mở Socket
       useEffect( () => {
-        
+       
         async function InitSocket() {
+          
           const socketConnection = new HubConnectionBuilder()
           .configureLogging(LogLevel.Debug)
           .withUrl(APIManager + "/gameHub", {
@@ -332,9 +334,8 @@ let backupvalue = -1;
     {
       if(start)
       {
-        const history = historys.slice(0,stepNumber + 1);
-        const current = history[history.length -1];
-        const squares = current.squares.slice();
+       
+        const squares = historys.squares;
         
         value=i;
         backupvalue = value;
@@ -344,43 +345,40 @@ let backupvalue = -1;
         {
           return;
         }
-        
-        if (turn %2!=0 && IdUserCurrent==game.userId1)
+        if (historys.Turn %2!=0 && IdUserCurrent==game.userId1)
         {
           squares[i]='X';
         }
         else
         {
-          if (turn %2==0 && IdUserCurrent==game.userId2)
+          if (historys.Turn %2==0 && IdUserCurrent==game.userId2)
           {
             squares[i]='O';
           }
           else return
         }
-
-       
-        var resultWinnerCal = calculateWinner(squares);
-        
+        var resultWinnerCal = calculateWinner(squares);       
         if (resultWinnerCal.Winner)
         {
           dispatch({
             type: 'Winner', Winner: resultWinnerCal.Winner,HightLine:resultWinnerCal.HightLine
           });
         }
+       
+       
         let gameHistory={
           GameId:game.id,
           PlayerId:IdUserCurrent,
-          Turn: turn,
+          Turn: historys.Turn,
           TimeOfTurn:game.board.timeOfTurn,
           Postion:i
         }
         console.log(gameHistory)
         connection && connection.invoke("play",gameHistory);
         
-        setHistorys(history.concat([{
-          squares:squares}]));
-          setStepNumber( stepNumber+1);
-          setTurn(turn+1);  
+        setHistorys({squares:squares,Turn:historys.Turn+1});
+          //setStepNumber( stepNumber+1);
+         
       }
       else
       {  
@@ -392,7 +390,7 @@ let backupvalue = -1;
   
 
   const jumpTo = (step) => {
-    setStepNumber(step);
+    //setStepNumber(step);
     setxIsNext(step % 2 === 0);
 
   }
@@ -408,64 +406,70 @@ let backupvalue = -1;
   
     setStart(UserReady);
   });
-  connection && connection.on("play", gameHistory => {
-    debugger
-    const history = historys.slice(0,stepNumber + 1);
-    const current = history[history.length -1];
-    const squares = current.squares.slice();  
+  connection && connection.on("play"+(historys.Turn), gameHistory => {
+    
+    let squares = historys.squares;  
     squares[gameHistory.postion] =(gameHistory.turn)%2==0? 'O':'X';
-    setHistorys(history.concat([{
-      squares:squares}]));
-    setTurn(gameHistory.turn+1);
-    setStepNumber( stepNumber+1);
+    value=gameHistory.postion;
+    var resultWinnerCal = calculateWinner(squares);       
+    if (resultWinnerCal.Winner)
+    {
+      dispatch({
+        type: 'Winner', Winner: resultWinnerCal.Winner,HightLine:resultWinnerCal.HightLine
+      });
+    }
+    setHistorys({
+      squares:squares,Turn:gameHistory.turn+1});
+  
+  //  setStepNumber( stepNumber+1);
    
 
   });
-
-  const history = historys;
-  
-  let current = history[0];
-  if (stepNumber<= (history.length -1))
-  {
-     current = history[stepNumber];
-  }
  
-  const moves = history.map((step,move) => {
+  // const history = historys;
+  
+  // let current = history;
+  // if (stepNumber<= (history.length -1))
+  // {
+  //    current = history[stepNumber];
+  // }
+ 
+  // const moves = history.map((step,move) => {
     
-    const row = Math.floor((move-1)/20);
-    const col =  (move-1) % 20;
-    const bold = move===stepNumber ? "bold" : "";
-    const desc = move ? `Go to move #${move} [${row},${col}]` : 'Go to game start';
-    return (
-      <li key={move}>
-        <button className={bold} onClick ={()=>jumpTo(move)}>{desc}</button>
-      </li>
-    );
-  })
-  if (!sortHistory)
-  {
-    moves.reverse();
-  }
-  let status;
-  if (winner)
-  {
-    status = `Winner: ${winner}` 
-  }
-  else  
-  {
+  //   const row = Math.floor((move-1)/20);
+  //   const col =  (move-1) % 20;
+  //   const bold = move===stepNumber ? "bold" : "";
+  //   const desc = move ? `Go to move #${move} [${row},${col}]` : 'Go to game start';
+  //   return (
+  //     <li key={move}>
+  //       <button className={bold} onClick ={()=>jumpTo(move)}>{desc}</button>
+  //     </li>
+  //   );
+  // })
+  // if (!sortHistory)
+  // {
+  //   moves.reverse();
+  // }
+  // let status;
+  // if (winner)
+  // {
+  //   status = `Winner: ${winner}` 
+  // }
+  // else  
+  // {
     
-    if (history.length === 200 && stepNumber==199)
-    {
-      status = 'Draw'
-    }
-    else
-      status = `Next player: ${xIsNext ? "X" : "O"}`;
-  }
+  //   if (history.length === 200 )
+  //   {
+  //     status = 'Draw'
+  //   }
+  //   else
+  //     status = `Next player: ${xIsNext ? "X" : "O"}`;
+  // }
   
   return (
     <div className="game" style={{ minWidth: 980 }}>
       <div className="game-board">
-        <Board squares={current.squares} onClick={(i) => handleClick(i)} HightLine={hightLine} />
+        <Board squares={historys.squares} onClick={(i) => handleClick(i)} HightLine={hightLine} />
       </div>
       <div className="wrap-right">
         <div className="game-info">
@@ -533,7 +537,7 @@ let backupvalue = -1;
 
 
         </div>
-        <MessageBox />
+        <MessageBox game={game} IdUserCurrent={IdUserCurrent}/>
       </div>
 
     </div>
