@@ -9,6 +9,7 @@ import Badge from "@material-ui/core/Badge";
 import { withStyles } from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
 import { MessageText } from "./messageText";
+import { array } from 'prop-types';
 
 const StyledBadge = withStyles((theme) => ({
   badge: {
@@ -40,12 +41,78 @@ const StyledBadge = withStyles((theme) => ({
 }))(Badge);
 
 export function MessageBox(props){
+  
+    const {game,IdUserCurrent,connection,turn} = props;
+    const [text,setText]=React.useState('');
+    const [message,setMessage] = React.useState([{userId:0,message1:''}]);
+    console.log(game)
+    const handleChange=(event)=>{
+    
+        setText(event.target.value)
+    }
+    const sendMessage = ()=>{
+      debugger
+      const sendmsg = {userId:IdUserCurrent,GameId:game.id,message1:text,Turn:turn};
+     
+      connection && connection.invoke("message", sendmsg);
+      setMessage([...message,sendmsg]);
+      setText('');
 
-    const {game,IdUserCurrent} = props;
+    }
+    connection && connection.on("message"+turn, msg => {
+      setMessage([...message,msg]);
+      
+    });
+  
+    let listChat =[];
+    for (let index = 1; index < message.length; index++) {
+      const element = message[index];
+      debugger
+      if (message[index+1])
+      {
+        
+        if (message[index+1].userId==message[index].userId)
+        
+        listChat.push(<MessageText key = {message.message1}
+          position="top"
+          isRight={IdUserCurrent==element.userId}
+          data={element.message1}
+          endMessage={false}
+        />)
+        else
+        {
+            listChat.push(<MessageText key = {message.message1}
+              position="bottom"
+              isRight={IdUserCurrent==element.userId}
+              data={element.message1}
+              endMessage={true}
+              src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg"
+            />);
+        }
+      }
+      else
+      {
+        
+        listChat.push(<MessageText key = {message.message1}
+          position="bottom"
+          isRight={IdUserCurrent==element.userId}
+          data={element.message1}
+          endMessage={true}
+          src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg"
+        />);
+      }
+      
+    }
+    const sendEnter=(event)=>{
+      debugger
+      if(event.charCode == 13){
+        sendMessage();
+    }
+    }
     return (
       <div className="wrap-message-box">
         <div className="header">
-          {/* <h2>Chat Box</h2> */}
+         
           <StyledBadge
             overlap="circle"
             anchorOrigin={{
@@ -60,83 +127,17 @@ export function MessageBox(props){
             />
           </StyledBadge>
           <span className="guest-infor">
-            {/* <span className="name">{IdUserCurrent==game.userId1? `${game.userId1Navigation.username}` : `${game.userId2Navigation.username}`}</span> */}
+            <span className="name">{IdUserCurrent==game.userId1 ? `${game.userId2Navigation?.username??""}` : `${game.userId1Navigation.username}`}</span>
             <span className="state">Đang hoạt động</span>
           </span>
         </div>
         {/* <div className="divider"></div> */}
         <div id="style-1" className="content">
-          <MessageText
-            position="top"
-            isRight={false}
-            data="Loi nao do"
-            endMessage={false}
-          />
-          <MessageText
-            position="mid"
-            isRight={false}
-            data="M chụp t coi thử"
-            endMessage={false}
-          />
-          <MessageText
-            position="bottom"
-            isRight={false}
-            data="No chua co api nen phan show data chua co thui"
-            endMessage={true}
-            src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg"
-          />
-
-          <div className="time-space">Thứ 7, 03/10/2020</div>
-
-          <MessageText
-            position="top"
-            isRight={true}
-            data="doi ti,Chưa mua kiểu này bao h, de check xem dasd"
-            endMessage={false}
-          />
-          <MessageText
-            position="mid"
-            isRight={true}
-            data="ao h, de check xem dasd"
-            endMessage={false}
-          />
-          <MessageText
-            position="mid"
-            isRight={true}
-            data="doi ti,Ch h, de check xem dasd"
-            endMessage={false}
-          />
-          <MessageText
-            position="bottom"
-            isRight={true}
-            data="doi ti,Chưa mua kiểu này bao h, de check xem dasd"
-            endMessage={false}
-          />
-
-          <div className="time-space">Thứ 7, 03/10/2020</div>
-
-          <MessageText
-            position="top"
-            isRight={false}
-            data="Loi nao do"
-            endMessage={false}
-          />
-          <MessageText
-            position="mid"
-            isRight={false}
-            data="M chụp t coi thử"
-            endMessage={false}
-          />
-          <MessageText
-            position="bottom"
-            isRight={false}
-            data="No chua co api nen phan show data chua co thui"
-            endMessage={true}
-            src="https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-male-avatar-maker.jpg"
-          />
+        
+         {listChat}
         </div>
         <div className="form-input">
-          <input placeholder="Aa" className="input-text "></input>
+          <input placeholder="Aa" className="input-text " value={text} onChange={handleChange} onKeyPress={sendEnter}></input>
           <span
             style={{
               padding: 5,
@@ -146,7 +147,7 @@ export function MessageBox(props){
               cursor: "pointer",
             }}
           >
-            <SendIcon />
+            <SendIcon  onClick={sendMessage} />
           </span>
         </div>
       </div>

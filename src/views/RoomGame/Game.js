@@ -53,9 +53,12 @@ let backupvalue = -1;
           .build();
         await socketConnection.start();
         setConnection(socketConnection);
-      
+        socketConnection && socketConnection.on("game", game => {
+  
+          setGame(game);
+        });
         
-        
+     
         socketConnection.onclose(function () {
           alert('Server has disconnected');
         });
@@ -330,6 +333,29 @@ let backupvalue = -1;
         HightLine:null
       }
     }
+    function Wingame(winGame)
+    {
+      let getToken = localStorage.getItem("Token");
+      if (getToken){       
+        var token = JSON.parse(getToken);
+        token = token.token
+        const requestURL = APIManager + "/api/wingame";
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body:winGame
+        };              
+        fetch(requestURL, requestOptions)
+        .then(response => response.json())
+        .then(res => 
+        {
+          console.log(res);
+        })
+      }
+    }
     const handleClick = (i) =>
     {
       if(start)
@@ -360,10 +386,13 @@ let backupvalue = -1;
         var resultWinnerCal = calculateWinner(squares);       
         if (resultWinnerCal.Winner)
         {
+          const winGame = JSON.stringify({ 'WinnerId': resultWinnerCal.Winner=='X'?game.userId1:game.userId2, 'LoserId': resultWinnerCal.Winner=='X'?game.userId2:game.userId1,GameId:game.id })
+          Wingame(winGame)
           dispatch({
             type: 'Winner', Winner: resultWinnerCal.Winner,HightLine:resultWinnerCal.HightLine
           });
         }
+      
        
        
         let gameHistory={
@@ -397,7 +426,11 @@ let backupvalue = -1;
   const sortHistoryFunc = () => {
     setsortHistory(!sortHistory)
   }
-
+  if (game.userId2 == IdUserCurrent)
+  {
+    connection && connection.invoke("game", game);
+  }
+ 
   connection && connection.on("ready", UserReady => {
   
     setReady(UserReady);
@@ -414,6 +447,8 @@ let backupvalue = -1;
     var resultWinnerCal = calculateWinner(squares);       
     if (resultWinnerCal.Winner)
     {
+      // const winGame = JSON.stringify({ 'WinnerId': resultWinnerCal.Winner=='X'?game.userId1:game.userId2, 'LoserId': resultWinnerCal.Winner=='X'?game.userId2:game.userId1,GameId:game.id })
+      // Wingame(winGame)
       dispatch({
         type: 'Winner', Winner: resultWinnerCal.Winner,HightLine:resultWinnerCal.HightLine
       });
@@ -537,7 +572,7 @@ let backupvalue = -1;
 
 
         </div>
-        <MessageBox game={game} IdUserCurrent={IdUserCurrent}/>
+        <MessageBox game={game} IdUserCurrent={IdUserCurrent} connection={connection} turn={historys.Turn}/>
       </div>
 
     </div>

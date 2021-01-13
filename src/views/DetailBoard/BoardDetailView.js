@@ -11,7 +11,7 @@ const BoardDetailView = ( ) => {
   const dispatch = useDispatch();
   const [start,setStart]=React.useState(false);
   const [ready,setReady]=React.useState(false);
-  const [game,setGame]= useState({userId1:0,userId2:0});
+  const [game,setGame]= useState({userId1:0,userId2:0,userId1Navigation:{username:''},userId2Navigation:{username:''}});
   const params = useParams();
   useEffect(() => {
     async function Init() {
