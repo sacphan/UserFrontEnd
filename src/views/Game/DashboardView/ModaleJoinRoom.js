@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import SaveIcon from '@material-ui/icons/Save';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
-import FiberNewIcon from '@material-ui/icons/FiberNew';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import PasswordDialog from 'src/views/Plugin/PasswordDialog'
@@ -134,7 +131,7 @@ export default function SimpleModal(props) {
           Join Room <SportsEsportsIcon></SportsEsportsIcon>
         </Button>
       </div>
-
+       
     </div>
   );
 
