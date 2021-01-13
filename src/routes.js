@@ -11,6 +11,7 @@ import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import SettingsView from 'src/views/settings/SettingsView';
 import BoardDetailView from 'src/views/DetailBoard/BoardDetailView';
+import GameHistoryView from 'src/views/RoomGame/GameHistory'
 const routes = (isLoggedIn)=>{
   
   return [
@@ -24,6 +25,7 @@ const routes = (isLoggedIn)=>{
       { path: 'products', element: <ProductListView /> },
       { path: 'settings', element: <SettingsView /> },
       { path : 'BoardGame/:id', element: <BoardDetailView /> },
+      { path : 'GameHistory/:id', element: <GameHistoryView /> },
       { path: '*', element: <Navigate to="/404" /> }
     
     ]

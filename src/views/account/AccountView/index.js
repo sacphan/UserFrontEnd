@@ -49,8 +49,8 @@ const ListGameView = () => {
     }
     Init();
   }, []);
-  const viewDetail = ()=>{
-    navigate(`/app/dashboard/`, { replace: true });
+  function  viewDetail(id){
+    navigate(`/app/GameHistory/${id}`, { replace: true });
   }
   return (
     <TableContainer component={Paper}>
@@ -75,7 +75,7 @@ const ListGameView = () => {
               </TableCell>
               <TableCell align="center">
                 <button style={{ cursor: 'pointer', background: 'aliceblue', width: '45px', borderRadius: "200px", border: '0px' }}
-                  onClick={viewDetail}>
+                  onClick={()=>{viewDetail(row.id)}}>
                   <VisibilityIcon >
                   </VisibilityIcon>
                 </button>
