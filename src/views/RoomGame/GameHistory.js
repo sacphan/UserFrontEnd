@@ -2,7 +2,7 @@ import React, { useState,useEffect  } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
-import Game from 'src/views/RoomGame/Game'
+import GameHistoryDetail from 'src/views/RoomGame/GameHistoryDetail'
 import { makeStyles } from '@material-ui/core/styles';
 import APIManager from 'src/utils/LinkAPI';
 import { set } from 'lodash';
@@ -11,8 +11,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 const BoardDetailView = ( ) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [start,setStart]=React.useState(false);
-  const [ready,setReady]=React.useState(false);
+ 
   const [game,setGame]= useState({userId1:0,userId2:0,userId1Navigation:{username:''},userId2Navigation:{username:''}});
   const params = useParams();
   useEffect(() => {
@@ -44,11 +43,11 @@ const BoardDetailView = ( ) => {
       }
     }
     Init();
-    async function GetGameByBoardId() {         
+    async function GetGameHistoryByGameId() {         
       const id = params.id;
      
       const token = JSON.parse(localStorage.getItem("Token")).token;
-      const requestURL = APIManager+`/api/GetGameByBoardId`;
+      const requestURL = APIManager+`/api/GetGameHistoryByGameId`;
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -75,12 +74,12 @@ const BoardDetailView = ( ) => {
         });
     }
 
-    GetGameByBoardId();
+    GetGameHistoryByGameId();
   }, []);
   
   return (
     <div style={{overflowX: 'hidden'}}>
-   <Game start={start} setStart={setStart} ready={ready} setReady={setReady} game={game} setGame={setGame}></Game>
+   <GameHistoryDetail game={game} setGame={setGame}></GameHistoryDetail>
   {/* <ChatBox></ChatBox> */}
     </div>
   );

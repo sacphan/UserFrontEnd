@@ -43,27 +43,10 @@ const StyledBadge = withStyles((theme) => ({
 export function MessageBox(props){
   
     const {game,IdUserCurrent,connection,turn} = props;
-    const [text,setText]=React.useState('');
-    const [message,setMessage] = React.useState([{userId:0,message1:''}]);
-    console.log(game)
-    const handleChange=(event)=>{
-    
-        setText(event.target.value)
-    }
-    const sendMessage = ()=>{
-      debugger
-      const sendmsg = {userId:IdUserCurrent,GameId:game.id,message1:text,Turn:turn};
-     
-      connection && connection.invoke("message", sendmsg);
-      setMessage([...message,sendmsg]);
-      setText('');
 
-    }
-    connection && connection.on("message"+turn, msg => {
-      setMessage([...message,msg]);
-      
-    });
-  
+    const [message,setMessage] = React.useState([{userId:0,message1:''}]);
+   
+    
     let listChat =[];
     for (let index = 1; index < message.length; index++) {
       const element = message[index];
@@ -103,12 +86,8 @@ export function MessageBox(props){
       }
       
     }
-    const sendEnter=(event)=>{
-      debugger
-      if(event.charCode == 13){
-        sendMessage();
-    }
-    }
+   
+    
     return (
       <div className="wrap-message-box">
         <div className="header">
@@ -137,7 +116,7 @@ export function MessageBox(props){
          {listChat}
         </div>
         <div className="form-input">
-          <input placeholder="Aa" className="input-text " value={text} onChange={handleChange} onKeyPress={sendEnter}></input>
+          <input placeholder="Aa" className="input-text "  ></input>
           <span
             style={{
               padding: 5,
@@ -147,7 +126,7 @@ export function MessageBox(props){
               cursor: "pointer",
             }}
           >
-            <SendIcon  onClick={sendMessage} />
+            <SendIcon  />
           </span>
         </div>
       </div>
