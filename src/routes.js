@@ -9,6 +9,7 @@ import LoginView from 'src/views/auth/LoginView';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
+import ConfirmAccount from 'src/views/auth/ConfirmAccount';
 import SettingsView from 'src/views/settings/SettingsView';
 import BoardDetailView from 'src/views/DetailBoard/BoardDetailView';
 const routes = (isLoggedIn)=>{
@@ -33,7 +34,9 @@ const routes = (isLoggedIn)=>{
     element: !isLoggedIn ?<MainLayout />: <Navigate to="/app/dashboard" />,
     children: [
       { path: 'login', element: <LoginView /> },
+      { path: 'confirmAccount/:id', element: <ConfirmAccount /> },
       { path: 'register', element: <RegisterView /> },
+
       { path: '404', element: <NotFoundView /> },
       { path: '/', element: <Navigate to="/app/dashboard" /> },
       { path: '*', element: <Navigate to="/404" /> }

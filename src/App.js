@@ -12,8 +12,8 @@ import { useDispatch } from 'react-redux'
 
 const App =  () => {
   const dispatch = useDispatch();
+  debugger
   const isLogedIn = useSelector((state) => state.AuthReducer.isLoggedIn);
-
   
   useEffect(() => {
     async function Init() {
