@@ -8,7 +8,7 @@ import APIManager from 'src/utils/LinkAPI';
 import { set } from 'lodash';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-const BoardDetailView = ( ) => {
+const BoardDetailView = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
  

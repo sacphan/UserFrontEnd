@@ -10,7 +10,7 @@ import BoardsContext from 'src/context/BoardsContext';
 import APIManager from 'src/utils/LinkAPI';
 import RowContext from 'src/context/RowContext';
 import ColumnContext from 'src/context/ColumnContext';
-import ColumnView from './ColumnView';
+import ColumnView from './ChatBox';
 export default function DeleteRowView() {
     const rowContext = useContext(RowContext);
     const coloumnContext = useContext(ColumnContext);
